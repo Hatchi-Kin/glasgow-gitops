@@ -1,8 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
 resources:
   - deployment.yaml
-  - service.yaml  # Assuming you might want to expose PostgreSQL via a service
-  - persistentVolumeClaim.yaml  # Assuming you want to persist data across pod restarts
-
-configurations:
-  - configMap.yaml  # Optional: If you have any configuration files to manage
-  - secrets.yaml  # Optional: If you have any secrets to manage
+  - service.yaml
+  - configmap.yaml

@@ -1,6 +1,0 @@
-resources:
-  - ../../base
-  - ../../../../secrets/dev/sops-encoded-secrets.yaml
-
-patchesStrategicMerge:
-  - deployment.yaml

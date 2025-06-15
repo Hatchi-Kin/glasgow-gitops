@@ -1,3 +1,7 @@
+# Get the initial admin password
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+aY2jT3EvltIww-rJ
+
 # Glasgow GitOps
 
 This repository contains a simplified GitOps structure for managing a K3s Kubernetes cluster. The goal is to provide a learning environment that mimics a production-like setup while remaining manageable for individual use.

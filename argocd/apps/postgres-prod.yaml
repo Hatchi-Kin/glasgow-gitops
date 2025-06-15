@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: glasgow-gitops
+  name: postgres-prod
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/Hatchi-Kin/glasgow-gitops.git'
+    repoURL: "https://github.com/Hatchi-Kin/glasgow-gitops.git"
     targetRevision: main
-    path: argocd/apps
+    path: components/postgres/overlays/prod
   destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: argocd
+    server: "https://kubernetes.default.svc"
+    namespace: postgres-prod
   syncPolicy:
     automated:
       prune: true
