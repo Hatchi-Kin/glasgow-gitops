@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: fastapi
-        image: glasgow-fastapi:latest
-        imagePullPolicy: Never  # Use local image for now
+        image: hatchikin/glasgow-fastapi:latest 
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         env:
@@ -46,7 +46,7 @@ spec:
             memory: "256Mi"
             cpu: "200m"
           limits:
-            memory: "512"
+            memory: "512Mi"
             cpu: "400m"
         livenessProbe:
           httpGet:
