@@ -1,60 +1,173 @@
-# Get the initial admin password
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-aY2jT3EvltIww-rJ
+# Glasgow GitOps Learning Journey 🚀
 
-# Glasgow GitOps
+## What We Built Today
 
-This repository contains a simplified GitOps structure for managing a K3s Kubernetes cluster. The goal is to provide a learning environment that mimics a production-like setup while remaining manageable for individual use.
+A complete **GitOps-managed microservices stack** with:
+- ✅ **PostgreSQL** (with persistent storage)
+- ✅ **MinIO** (object storage)  
+- ✅ **FastAPI** (from separate repo via Docker Hub)
+- ✅ **Ingress** (Traefik-based external access)
+- ✅ **ArgoCD** (GitOps deployment automation)
 
-## Project Structure
+## 📁 Repository Structure
 
 ```
-glasgow-gitops/
+glasgow-gitops/                    # Infrastructure definitions
 ├── argocd/
-│   ├── apps/                # Contains ArgoCD application definitions for each service
-│   │   ├── minio.yaml       # ArgoCD application for MinIO
-│   │   ├── postgres.yaml     # ArgoCD application for PostgreSQL
-│   │   ├── fastapi.yaml      # ArgoCD application for FastAPI
-│   │   └── ingress.yaml      # ArgoCD application for managing ingress resources
-│   └── root-app.yaml        # Root ArgoCD application pointing to the apps directory
-├── components/              # Contains Kubernetes manifests for each application
-│   ├── minio/               # MinIO application resources
-│   │   ├── base/            # Base configuration for MinIO
-│   │   └── overlays/        # Environment-specific overlays for MinIO
-│   ├── postgres/            # PostgreSQL application resources
-│   │   ├── base/            # Base configuration for PostgreSQL
-│   │   └── overlays/        # Environment-specific overlays for PostgreSQL
-│   ├── fastapi/             # FastAPI application resources
-│   │   ├── base/            # Base configuration for FastAPI
-│   │   └── overlays/        # Environment-specific overlays for FastAPI
-│   └── ingress/             # Ingress resources
-│       ├── base/            # Base configuration for ingress
-│       └── overlays/        # Environment-specific overlays for ingress
-├── secrets/                 # Contains secrets for the applications
-│   └── dev/                 # Development environment secrets
-│       └── sops-encoded-secrets.yaml # SOPS-encoded secrets
-└── README.md                # Documentation for the project
+│   ├── install.yaml              # ArgoCD installation
+│   └── apps/                     # Application definitions
+│       ├── root.yaml             # Root application (deploys others)
+│       ├── postgres-prod.yaml    # PostgreSQL app
+│       ├── minio.yaml            # MinIO app  
+│       ├── fastapi.yaml          # FastAPI app
+│       └── ingress.yaml          # Ingress app
+├── components/                   # Kubernetes manifests
+│   ├── postgres/
+│   │   ├── base/                 # Base configuration
+│   │   └── overlays/prod/        # Production overrides
+│   ├── minio/
+│   │   ├── base/
+│   │   └── overlays/prod/
+│   ├── fastapi/
+│   │   ├── base/
+│   │   └── overlays/prod/
+│   └── ingress/
+│       ├── base/
+│       └── overlays/prod/
+
+glasgow-fastapi/                   # Application code (separate repo)
+├── app/
+│   └── main.py                   # FastAPI application
+├── Dockerfile                    # Container build instructions
+└── requirements.txt              # Python dependencies
 ```
 
-## Getting Started
+## 🔧 Key Concepts Learned
 
-1. **Clone the Repository**: 
-   ```
-   git clone <repository-url>
-   cd glasgow-gitops
-   ```
+### **Kustomize**
+- **Purpose**: Template-free Kubernetes configuration management
+- **Base**: Common configuration shared across environments
+- **Overlays**: Environment-specific modifications (dev, staging, prod)
+- **Patches**: Targeted changes to base resources
 
-2. **Install Dependencies**: Ensure you have ArgoCD, Kustomize, and SOPS installed.
+```yaml
+# Example kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 
-3. **Deploy Applications**: Use ArgoCD to deploy the applications defined in the `argocd/apps` directory.
+resources:
+  - ../../base        # Include base resources
 
-4. **Manage Secrets**: Use SOPS to manage sensitive information in the `secrets/dev/sops-encoded-secrets.yaml` file.
+patches:
+  - path: config-patch.yaml  # Apply environment-specific changes
+```
 
-## Learning Objectives
+### **ArgoCD Applications**
+- **Root App Pattern**: One app that deploys other apps
+- **App of Apps**: Manages multiple applications declaratively
+- **Sync Policies**: Automated vs manual deployment control
 
-- Understand the basics of GitOps and how to manage Kubernetes resources using ArgoCD.
-- Learn how to structure a GitOps repository for clarity and maintainability.
-- Gain hands-on experience with Kustomize for managing Kubernetes configurations.
-- Explore best practices for managing secrets in a Kubernetes environment.
+### **GitOps Workflow**
+1. **Developer** pushes code to application repo (glasgow-fastapi)
+2. **CI/CD** builds Docker image and pushes to registry
+3. **Developer** updates infrastructure repo (glasgow-gitops)
+4. **ArgoCD** detects changes and deploys to cluster
+5. **Cluster** pulls new images and applies configurations
 
-Feel free to modify and extend this repository as you learn more about Kubernetes and GitOps!
+## 💻 Essential CLI Commands
+
+### **kubectl (Kubernetes)**
+```bash
+# Check cluster status
+kubectl get nodes
+kubectl get pods -A
+kubectl get namespaces
+
+# Application debugging
+kubectl get pods -n <namespace>
+kubectl describe pod <pod-name> -n <namespace>
+kubectl logs <pod-name> -n <namespace>
+
+# Service and ingress
+kubectl get svc -n <namespace>
+kubectl get ingress -n <namespace>
+kubectl get endpoints -n <namespace>
+
+# Force restart deployment
+kubectl rollout restart deployment/<name> -n <namespace>
+
+# Port forwarding for testing
+kubectl port-forward svc/<service-name> -n <namespace> 8080:8000
+```
+
+### **ArgoCD**
+```bash
+# Login to ArgoCD
+argocd login <argocd-server>
+
+# List applications
+argocd app list
+
+# Sync applications
+argocd app sync <app-name>
+argocd app sync glasgow-gitops  # Sync root app
+
+# Get application status
+argocd app get <app-name>
+```
+
+### **Kustomize**
+```bash
+# Preview what will be deployed
+kubectl kustomize components/<service>/overlays/prod
+
+# Apply directly (for testing)
+kubectl apply -k components/<service>/overlays/prod
+```
+
+### **Docker**
+```bash
+# Build and push images
+docker build -t <username>/<image>:latest .
+docker push <username>/<image>:latest
+
+# Tag for different registries
+docker tag <image> <registry>/<image>:tag
+```
+
+## 🔍 Debugging Commands
+
+### **Check Application Health**
+```bash
+# ArgoCD applications status
+kubectl get applications -n argocd
+
+# Pod status across all namespaces
+kubectl get pods -A | grep -E "(postgres|minio|fastapi)"
+
+# Service endpoints
+kubectl get endpoints -A
+```
+
+### **Troubleshooting Common Issues**
+```bash
+# Image pull issues
+kubectl describe pod <pod-name> -n <namespace>
+
+# Service connectivity
+kubectl get svc -n <namespace>
+kubectl get endpoints -n <namespace>
+
+# Ingress issues
+kubectl get ingress -A
+kubectl describe ingress <ingress-name> -n <namespace>
+```
+
+
+
+## 📚 Useful Resources
+
+- **ArgoCD Docs**: https://argo-cd.readthedocs.io/
+- **Kustomize Docs**: https://kustomize.io/
+- **k3s Docs**: https://k3s.io/
+- **Kubernetes Docs**: https://kubernetes.io/docs/
