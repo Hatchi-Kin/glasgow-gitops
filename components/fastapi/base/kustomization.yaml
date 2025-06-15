@@ -1,0 +1,3 @@
+resources:
+  - deployment.yaml
+  - service.yaml  # Assuming you will have a service.yaml for the FastAPI application. Adjust as necessary.

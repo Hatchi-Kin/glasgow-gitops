@@ -1,0 +1,3 @@
+resources:
+  - deployment.yaml
+  - service.yaml  # Assuming you might want to expose MinIO via a service, add this if needed.
