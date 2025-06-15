@@ -68,3 +68,116 @@ echo "192.168.1.20 api.glasgow.local" | sudo tee -a /etc/hosts
 - **FastAPI Root**: `http://api.glasgow.local/`
 - **Health Check**: `http://api.glasgow.local/health`
 - **Local FastAPI**: `http://localhost:8081/` (with port-forward)
+
+
+# K3s Homelab Cluster
+
+> A learning project for Kubernetes using K3s on bare metal
+
+## Cluster Architecture
+
+| Hostname   | Role           | CPU/RAM         | IP              |
+|------------|----------------|-----------------|-----------------|
+| adama      | control plane  | i5-7200U, 8GB   | 192.168.1.20    |
+| boomer     | worker         | N150, 16GB      | 192.168.1.21    |
+| apollo     | worker         | N150, 16GB      | 192.168.1.22    |
+| starbuck   | worker         | N150, 16GB      | 192.168.1.23    |
+
+
+## Quick Reference
+
+### Cluster Lifecycle
+
+```sh
+# Check status
+python3 galactica_on_and_off.py status
+
+# Shutdown cluster
+python3 galactica_on_and_off.py off -f
+
+# Prepare cluster after power on
+python3 galactica_on_and_off.py on
+```
+
+### Common Commands
+
+```sh
+# Check cluster health
+kubectl get nodes
+kubectl get pods -A
+```
+### Network Configuration
+
+```sh
+# Check connectivity between nodes
+ping 192.168.1.20  # adama
+ping 192.168.1.21  # boomer
+ping 192.168.1.22  # apollo
+ping 192.168.1.23  # starbuck
+```
+
+## Control Plane Setup
+
+### Install K3s Server on adama
+
+```sh
+# Installation
+curl -sfL https://get.k3s.io | sh -
+
+# Verify installation
+sudo systemctl status k3s
+k3s --version
+kubectl get nodes
+
+# Get join token for workers (you'll need this)
+sudo cat /var/lib/rancher/k3s/server/node-token
+```
+
+### Configure kubectl for Regular User
+
+```sh
+# Set up kubectl access without requiring sudo
+mkdir -p ~/.kube
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+sudo chown $USER:$USER ~/.kube/config
+chmod 600 ~/.kube/config
+echo 'export KUBECONFIG=~/.kube/config' >> ~/.bashrc
+source ~/.bashrc
+
+## Worker Node Setup
+
+Run on each worker node (boomer, apollo, starbuck):
+
+```sh
+# Replace TOKEN with the actual token from the master node
+curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.20:6443 K3S_TOKEN=TOKEN sh -
+```
+
+### Add Labels to Worker Nodes
+
+```sh
+# Add worker role labels
+kubectl label node boomer node-role.kubernetes.io/worker=worker
+kubectl label node apollo node-role.kubernetes.io/worker=worker
+kubectl label node starbuck node-role.kubernetes.io/worker=worker
+```
+
+### Configure Remote Kubeconfig
+
+```sh
+# ON MASTER NODE: Create a remote-accessible config
+sudo cp /etc/rancher/k3s/k3s.yaml ~/k3s-remote.yaml
+sudo chown $USER:$USER ~/k3s-remote.yaml
+chmod 600 ~/k3s-remote.yaml
+sed -i 's/127.0.0.1/192.168.1.20/' ~/k3s-remote.yaml
+
+# ON LOCAL MACHINE: Copy the config file
+scp bsg@192.168.1.20:~/k3s-remote.yaml ~/k3s.yaml
+export KUBECONFIG=~/k3s.yaml
+
+# Add to shell profile
+echo 'export KUBECONFIG=~/k3s.yaml' >> ~/.bashrc
+
+# Test connection
+kubectl get nodes
+```
