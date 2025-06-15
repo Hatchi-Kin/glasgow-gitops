@@ -15,6 +15,9 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "200m"
+        volumeMounts:
+        - name: data
+          mountPath: /data
       volumes:
       - name: data
         persistentVolumeClaim:
