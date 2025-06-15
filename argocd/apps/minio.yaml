@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/Hatchi-Kin/glasgow-gitops.git
-    targetRevision: HEAD
+    targetRevision: main
     path: components/minio/overlays/dev
   destination:
     server: 'https://kubernetes.default.svc'
