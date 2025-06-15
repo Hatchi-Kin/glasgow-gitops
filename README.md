@@ -8,11 +8,17 @@ A complete **GitOps-managed microservices stack** with:
 - ✅ **FastAPI** (from separate repo via Docker Hub)
 - ✅ **Ingress** (Traefik-based external access)
 - ✅ **ArgoCD** (GitOps deployment automation)
+- ✅ **Cluster Management** (automated shutdown/startup scripts)
 
 ## 📁 Repository Structure
 
 ```
 glasgow-gitops/                    # Infrastructure definitions
+├── admin-scripts/                # Cluster management tools
+│   ├── galactica_on_and_off.py  # Automated cluster control
+│   ├── verify-cluster.sh         # Health verification
+│   ├── quick_check.py            # Node status checker
+│   └── restart.md                # Quick restart guide
 ├── argocd/
 │   ├── install.yaml              # ArgoCD installation
 │   └── apps/                     # Application definitions
@@ -43,6 +49,16 @@ glasgow-fastapi/                   # Application code (separate repo)
 ```
 
 ## 🔧 Key Concepts Learned
+
+### **Persistent Storage**
+- **PVCs**: Persistent Volume Claims that survive pod restarts
+- **local-path**: K3s default storage class for persistent data
+- **Data Persistence**: Verified through full cluster restarts
+
+### **Cluster Operations**
+- **Graceful Shutdown**: Drain nodes before shutdown to protect workloads
+- **Recovery Process**: Uncordon nodes after restart to enable scheduling
+- **Automation**: Python scripts handle complex multi-node operations
 
 ### **Kustomize**
 - **Purpose**: Template-free Kubernetes configuration management
@@ -76,12 +92,29 @@ patches:
 
 ## 💻 Essential CLI Commands
 
+### **Cluster Management**
+```bash
+# Automated cluster control
+python3 admin-scripts/galactica_on_and_off.py off --force    # Shutdown
+python3 admin-scripts/galactica_on_and_off.py on             # Startup
+python3 admin-scripts/galactica_on_and_off.py status         # Check status
+
+
+# Manual node management
+kubectl drain boomer apollo starbuck --ignore-daemonsets --delete-emptydir-data
+kubectl uncordon boomer apollo starbuck
+```
+
 ### **kubectl (Kubernetes)**
 ```bash
 # Check cluster status
 kubectl get nodes
 kubectl get pods -A
 kubectl get namespaces
+
+# Check persistent storage
+kubectl get pvc -A
+kubectl get pv
 
 # Application debugging
 kubectl get pods -n <namespace>
@@ -102,8 +135,11 @@ kubectl port-forward svc/<service-name> -n <namespace> 8080:8000
 
 ### **ArgoCD**
 ```bash
+# Setup port-forward in tmux
+tmux new-session -d -s argocd-pf 'kubectl port-forward svc/argocd-server -n argocd 8080:443'
+
 # Login to ArgoCD
-argocd login <argocd-server>
+argocd login localhost:8080 --insecure
 
 # List applications
 argocd app list
@@ -111,6 +147,7 @@ argocd app list
 # Sync applications
 argocd app sync <app-name>
 argocd app sync glasgow-gitops  # Sync root app
+argocd app sync --all           # Sync all apps
 
 # Get application status
 argocd app get <app-name>
@@ -147,10 +184,17 @@ kubectl get pods -A | grep -E "(postgres|minio|fastapi)"
 
 # Service endpoints
 kubectl get endpoints -A
+
+# Check persistent storage
+kubectl get pvc -A
+kubectl describe pvc <pvc-name> -n <namespace>
 ```
 
 ### **Troubleshooting Common Issues**
 ```bash
+# Pods stuck in Pending after restart
+kubectl uncordon boomer apollo starbuck
+
 # Image pull issues
 kubectl describe pod <pod-name> -n <namespace>
 
@@ -161,9 +205,32 @@ kubectl get endpoints -n <namespace>
 # Ingress issues
 kubectl get ingress -A
 kubectl describe ingress <ingress-name> -n <namespace>
+
+# ArgoCD sync issues
+argocd app sync --all
 ```
 
+## 🚀 Production Readiness Achievements
 
+### **Data Persistence** ✅
+- PostgreSQL and MinIO data survives cluster restarts
+- PVCs remain bound with same volume IDs
+- Zero data loss during maintenance operations
+
+### **Cluster Resilience** ✅
+- Full cluster shutdown/startup automation
+- Graceful node draining and recovery
+- ~10 minute recovery time from power-off to fully operational
+
+### **GitOps Automation** ✅
+- Declarative infrastructure management
+- Automatic application sync via ArgoCD
+- No configuration drift after restarts
+
+### **Enterprise Operations** ✅
+- Automated health verification
+- Comprehensive documentation
+- Reproducible deployment procedures
 
 ## 📚 Useful Resources
 
@@ -171,3 +238,4 @@ kubectl describe ingress <ingress-name> -n <namespace>
 - **Kustomize Docs**: https://kustomize.io/
 - **k3s Docs**: https://k3s.io/
 - **Kubernetes Docs**: https://kubernetes.io/docs/
+- **GitOps Guide**: https://www.gitops.tech/
