@@ -1,9 +1,0 @@
-resources:
-  - ../../base/deployment.yaml
-  - ../../base/kustomization.yaml
-
-nameSuffix: -dev
-
-commonLabels:
-  app: minio
-  environment: dev

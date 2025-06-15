@@ -1,9 +1,0 @@
-resources:
-  - ../../base
-  - ../../base/ingress.yaml
-
-patchesStrategicMerge:
-  - ingress-patch.yaml
-
-configurations:
-  - ingress-config.yaml

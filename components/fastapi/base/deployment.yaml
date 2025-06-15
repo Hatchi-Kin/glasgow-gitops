@@ -16,11 +16,45 @@ spec:
     spec:
       containers:
       - name: fastapi
-        image: your-docker-repo/fastapi:latest
+        image: glasgow-fastapi:latest
+        imagePullPolicy: Never  # Use local image for now
         ports:
-        - containerPort: 80
+        - containerPort: 8000
         env:
-        - name: ENV_VAR_NAME
-          value: "value"  # Replace with your environment variable
-        # Add any additional configurations here
-      # Add any additional specifications like volumes, etc. if needed
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-config
+              key: DATABASE_URL
+        - name: MINIO_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-config
+              key: MINIO_ENDPOINT
+        - name: MINIO_ACCESS_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-config
+              key: MINIO_ACCESS_KEY
+        - name: MINIO_SECRET_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-config
+              key: MINIO_SECRET_KEY
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512"
+            cpu: "400m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5

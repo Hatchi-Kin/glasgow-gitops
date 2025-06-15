@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: fastapi
+  name: fastapi-prod
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/Hatchi-Kin/glasgow-gitops.git'
+    repoURL: 'https://github.com/Hatchi-Kin/glasgow-gitops.git'  # Back to GitOps repo
     targetRevision: main
-    path: components/fastapi/overlays/dev
+    path: components/fastapi/overlays/prod  # Use GitOps manifests
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: fastapi
+    namespace: fastapi-prod
   syncPolicy:
     automated:
       prune: true

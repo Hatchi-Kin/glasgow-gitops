@@ -1,3 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
 resources:
   - deployment.yaml
-  - service.yaml  # Assuming you will have a service.yaml for the FastAPI application. Adjust as necessary.
+  - service.yaml
+  - configmap.yaml
