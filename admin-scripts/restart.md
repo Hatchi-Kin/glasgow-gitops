@@ -5,6 +5,8 @@
 ```bash
 # Shutdown cluster
 python3 galactica_on_and_off.py off -f
+# or
+python3 admin-scripts/galactica_on_and_off.py off -f
 
 # Startup cluster  
 python3 galactica_on_and_off.py on

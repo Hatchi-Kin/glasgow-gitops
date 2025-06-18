@@ -64,6 +64,41 @@ kubectl logs -n fastapi-prod deployment/fastapi
 echo "192.168.1.20 api.glasgow.local" | sudo tee -a /etc/hosts
 ```
 
+# Logs
+
+## 1. Check FastAPI pod logs:
+
+```bash
+kubectl logs -n fastapi-prod deployment/fastapi
+```
+
+Or if you want to follow logs in real-time:
+```bash
+kubectl logs -n fastapi-prod deployment/fastapi -f
+```
+
+## 2. Get specific pod name and check logs:
+
+```bash
+kubectl get pods -n fastapi-prod
+kubectl logs -n fastapi-prod <pod-name>
+```
+
+## 3. Check previous logs if pod restarted:
+
+```bash
+kubectl logs -n fastapi-prod deployment/fastapi --previous
+```
+
+## 4. Check pod status and events:
+
+```bash
+kubectl describe pod -n fastapi-prod -l app=fastapi
+```
+
+
+
+
 ### 🎯 Quick Access URLs
 - **FastAPI Root**: `http://api.glasgow.local/`
 - **Health Check**: `http://api.glasgow.local/health`
