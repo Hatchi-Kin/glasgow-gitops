@@ -123,7 +123,7 @@ def run_verification():
     print("\nRunning cluster verification...")
     try:
         result = subprocess.run(
-            ["./verify-cluster.sh"],
+            ["python3", "quick_check.py"],
             cwd="/home/kin/Documents/glasgow-gitops/admin-scripts",
         )
         return result.returncode == 0
