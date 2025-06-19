@@ -48,33 +48,30 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "400m"
-        livenessProbe:
+        livenessProbe: # Checks if app is still alive / Restarts pod if it fails 3 times in a row
           httpGet:
             path: /health
             port: 8000
             scheme: HTTP
-          initialDelaySeconds: 30
-          periodSeconds: 600
+          initialDelaySeconds: 60
+          periodSeconds: 120
           timeoutSeconds: 10
           failureThreshold: 3
-          successThreshold: 1
         readinessProbe:
           httpGet:
             path: /health
             port: 8000
             scheme: HTTP
-          initialDelaySeconds: 30
-          periodSeconds: 600
+          initialDelaySeconds: 20
+          periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 3
-          successThreshold: 1
         startupProbe:
           httpGet:
             path: /health
             port: 8000
             scheme: HTTP
-          initialDelaySeconds: 20
-          periodSeconds: 5
+          initialDelaySeconds: 10
+          periodSeconds: 7
           timeoutSeconds: 5
-          failureThreshold: 12
-          successThreshold: 1
+          failureThreshold: 20
