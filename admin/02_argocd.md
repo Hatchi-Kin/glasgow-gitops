@@ -57,9 +57,11 @@ spec:
     syncOptions:
       - CreateNamespace=true
 ```
-
-and push to main branch.
-then run
+and 
+```sh
+touch argocd/apps/README.md
+```
+then commit the changes and run:
 ```sh
 kubectl apply -f argocd/root-app.yaml -n argocd
 ```
