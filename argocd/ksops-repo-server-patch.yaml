@@ -13,8 +13,8 @@ spec:
           image: viaductoss/ksops:v4.3.3
           command: ["/bin/sh", "-c"]
           args:
-            - mv ksops /custom-tools/;
-              mv kustomize /custom-tools/;
+            - cp /ksops /custom-tools/;
+              cp /kustomize /custom-tools/;
           volumeMounts:
             - mountPath: /custom-tools
               name: custom-tools
