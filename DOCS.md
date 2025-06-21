@@ -1,5 +1,10 @@
 ## 🚀 Glasgow GitOps - Quick Reference
 
+  POSTGRES_DB: "galacticaDBM5HrteH"
+  POSTGRES_USER: "adamauserM5HrteH"
+  POSTGRES_PASSWORD: "adamapssM5HrteH"
+
+
 ### 📱 Web UIs
 
 | Service | URL | Description |
