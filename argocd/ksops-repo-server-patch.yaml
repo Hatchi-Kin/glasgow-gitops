@@ -27,3 +27,4 @@ spec:
             - mountPath: /usr/local/bin/ksops
               name: custom-tools
               subPath: ksops
+          # $patch: merge
