@@ -22,9 +22,5 @@ spec:
         - name: argocd-repo-server
           volumeMounts:
             $patch: merge
-            - mountPath: /usr/local/bin/kustomize
+            - mountPath: /custom-tools
               name: custom-tools
-              subPath: kustomize
-            - mountPath: /usr/local/bin/ksops
-              name: custom-tools
-              subPath: ksops
