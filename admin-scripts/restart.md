@@ -1,3 +1,9 @@
+data:
+  POSTGRES_DB: "GalacticaDBHjki58e"
+  POSTGRES_USER: "AdamaUserHjki58e"
+  POSTGRES_PASSWORD: "AdamaPssWHjki58e"
+  
+
 # 🔄 Glasgow GitOps - Cluster Restart Guide
 
 ## Quick Commands
