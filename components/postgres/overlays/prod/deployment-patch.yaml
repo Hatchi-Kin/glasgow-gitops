@@ -7,27 +7,28 @@ spec:
     spec:
       containers:
       - name: postgres
+        env:
+          $patch: replace
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: postgres-prod-sealed-secret
+                key: db
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-prod-sealed-secret
+                key: username
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-prod-sealed-secret
+                key: password
         image: postgres:15
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5432
           protocol: TCP
-        env:
-        - name: POSTGRES_DB
-          valueFrom:
-            secretKeyRef:
-              name: postgres-prod-sealed-secret
-              key: db
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: postgres-prod-sealed-secret
-              key: username
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-prod-sealed-secret
-              key: password
         resources:
           limits:
             cpu: 500m
