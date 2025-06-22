@@ -1,9 +1,13 @@
+name: postgres-secret
 data:
   POSTGRES_DB: "GalacticaDBHjki58e"
   POSTGRES_USER: "AdamaUserHjki58e"
   POSTGRES_PASSWORD: "AdamaPssWHjki58e"
   
-
+name: minio-secret
+stringData:
+  root-user: GalacticaMiniOHjki58e
+  root-password: AdamaUserMinioHjki58e
 # 🔄 Glasgow GitOps - Cluster Restart Guide
 
 ## Quick Commands

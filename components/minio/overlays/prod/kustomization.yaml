@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ../../base
   - pvc.yaml
+  - minio-prod-sealed-secret.yaml
 
 patches:
   - path: deployment-patch.yaml
-  - path: secret-patch.yaml
