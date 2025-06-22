@@ -24,23 +24,3 @@ spec:
               secretKeyRef:
                 name: postgres-prod-sealed-secret
                 key: password
-        image: postgres:15
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 5432
-          protocol: TCP
-        resources:
-          limits:
-            cpu: 500m
-            memory: 1Gi
-          requests:
-            cpu: 250m
-            memory: 512Mi
-        volumeMounts:
-        - name: postgres-storage
-          mountPath: /var/lib/postgresql/data
-      terminationGracePeriodSeconds: 30
-      volumes:
-      - name: postgres-storage
-        persistentVolumeClaim:
-          claimName: postgres-pvc
