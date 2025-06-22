@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-repo-server
+spec:
+  template:
+    spec:
+      containers:
+      - name: argocd-repo-server
+        env:
+        - name: SOPS_AGE_KEY_FILE
+          value: /app/config/age/age.agekey
+        volumeMounts:
+        - name: sops-age
+          mountPath: /app/config/age
+      volumes:
+      - name: sops-age
+        secret:
+          secretName: sops-age
