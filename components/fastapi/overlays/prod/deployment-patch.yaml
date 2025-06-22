@@ -8,6 +8,42 @@ spec:
     spec:
       containers:
       - name: fastapi
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-config
+              key: DATABASE_URL
+        - name: MINIO_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-config
+              key: MINIO_ENDPOINT
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-prod-sealed-secret
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-prod-sealed-secret
+              key: password
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres-prod-sealed-secret
+              key: db
+        - name: MINIO_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: minio-secret
+              key: root-user
+        - name: MINIO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: minio-secret
+              key: root-password
         resources:
           requests:
             memory: "256Mi"

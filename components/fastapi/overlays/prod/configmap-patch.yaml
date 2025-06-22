@@ -3,7 +3,5 @@ kind: ConfigMap
 metadata:
   name: fastapi-config
 data:
-  DATABASE_URL: "postgresql://produser:prodpassword456@postgres-service.postgres-prod:5432/proddb"
+  DATABASE_URL: ""
   MINIO_ENDPOINT: "minio-service.minio-prod:9000"
-  MINIO_ACCESS_KEY: "prodadmin"
-  MINIO_SECRET_KEY: "prodpassword123"

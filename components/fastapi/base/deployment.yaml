@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: fastapi
-        image: hatchikin/glasgow-fastapi:latest 
+        image: hatchikin/glasgow-fastapi:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
@@ -31,16 +31,16 @@ spec:
             configMapKeyRef:
               name: fastapi-config
               key: MINIO_ENDPOINT
+        - name: POSTGRES_USER
+          value: myuser
+        - name: POSTGRES_PASSWORD
+          value: mypassword
+        - name: POSTGRES_DB
+          value: mydb
         - name: MINIO_ACCESS_KEY
-          valueFrom:
-            configMapKeyRef:
-              name: fastapi-config
-              key: MINIO_ACCESS_KEY
+          value: admin
         - name: MINIO_SECRET_KEY
-          valueFrom:
-            configMapKeyRef:
-              name: fastapi-config
-              key: MINIO_SECRET_KEY
+          value: password123
         resources:
           requests:
             memory: "256Mi"
@@ -48,7 +48,7 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "400m"
-        livenessProbe: # Checks if app is still alive / Restarts pod if it fails 3 times in a row
+        livenessProbe:
           httpGet:
             path: /health
             port: 8000
