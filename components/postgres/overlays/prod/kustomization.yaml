@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ../../base
   - pvc.yaml
+  - postgres-prod-sealed-secret.yaml
 
 patches:
   - path: configmap-patch.yaml
