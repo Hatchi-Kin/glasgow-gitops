@@ -27,15 +27,40 @@ spec:
               name: fastapi-config
               key: MINIO_ENDPOINT
         - name: POSTGRES_USER
-          value: myuser
+          valueFrom:
+            secretKeyRef:
+              name: postgres-prod-sealed-secret
+              key: username
         - name: POSTGRES_PASSWORD
-          value: mypassword
+          valueFrom:
+            secretKeyRef:
+              name: postgres-prod-sealed-secret
+              key: password
         - name: POSTGRES_DB
-          value: mydb
+          valueFrom:
+            secretKeyRef:
+              name: postgres-prod-sealed-secret
+              key: db
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-config
+              key: POSTGRES_HOST
+        - name: POSTGRES_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-config
+              key: POSTGRES_PORT
         - name: MINIO_ACCESS_KEY
-          value: admin
+          valueFrom:
+            secretKeyRef:
+              name: minio-secret
+              key: root-user
         - name: MINIO_SECRET_KEY
-          value: password123
+          valueFrom:
+            secretKeyRef:
+              name: minio-secret
+              key: root-password
         resources:
           requests:
             memory: "256Mi"
