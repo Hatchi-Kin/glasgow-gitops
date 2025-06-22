@@ -2,8 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: minio-service
-  labels:
-    app: minio
+  namespace: minio-prod
 spec:
   selector:
     app: minio

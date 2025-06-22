@@ -17,11 +17,11 @@ spec:
       containers:
       - name: minio
         image: quay.io/minio/minio:latest
-        command:
-        - /bin/bash
-        - -c
         args:
-        - minio server /data --console-address :9001
+        - server
+        - /data
+        - --console-address
+        - ":9001"
         ports:
         - containerPort: 9000
           name: api
@@ -29,9 +29,15 @@ spec:
           name: console
         env:
         - name: MINIO_ROOT_USER
-          value: admin
+          valueFrom:
+            secretKeyRef:
+              name: minio-secret
+              key: root-user
         - name: MINIO_ROOT_PASSWORD
-          value: password123
+          valueFrom:
+            secretKeyRef:
+              name: minio-secret
+              key: root-password
         volumeMounts:
         - name: data
           mountPath: /data
@@ -47,6 +53,14 @@ spec:
             port: 9000
           initialDelaySeconds: 5
           timeoutSeconds: 5
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
       volumes:
       - name: data
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: minio-pvc
