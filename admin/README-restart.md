@@ -1,3 +1,4 @@
+<!-- 
 name: postgres-secret
 data:
   POSTGRES_DB: "GalacticaDBHjki58e"
@@ -7,63 +8,53 @@ data:
 name: minio-secret
 stringData:
   root-user: GalacticaMiniOHjki58e
-  root-password: AdamaUserMinioHjki58e
-# 🔄 Glasgow GitOps - Cluster Restart Guide
+  root-password: AdamaUserMinioHjki58e 
+-->
+
+
+# 🔄 Cluster Restart Guide
+
+Quick commands to shutdown, start, and check the cluster.
 
 ## Quick Commands
 
-```bash
-# Shutdown cluster
+```sh
 python3 galactica_on_and_off.py off -f
-# or
-python3 admin-scripts/galactica_on_and_off.py off -f
-
-# Startup cluster  
 python3 galactica_on_and_off.py on
-
-# Check status
 python3 galactica_on_and_off.py status
 ```
 
-## Manual Process (if needed)
+## Manual Process
 
 ### Shutdown
-```bash
-# 1. Drain workers
+```sh
 kubectl drain boomer apollo starbuck --ignore-daemonsets --delete-emptydir-data
-
-# 2. Shutdown (workers first, then master)
 ssh boomer "sudo shutdown -h now"
-ssh apollo "sudo shutdown -h now" 
+ssh apollo "sudo shutdown -h now"
 ssh starbuck "sudo shutdown -h now"
 sleep 30
 sudo shutdown -h now
 ```
 
 ### Startup
-```bash
-# 1. Power on: adama first, then workers
-# 2. Uncordon workers
+```sh
+# Power on adama first, then workers
 kubectl uncordon boomer apollo starbuck
-
-# 3. Verify
 ./verify-cluster.sh
 ```
-
-## Recovery Time: ~10 minutes
-
-**Critical:** Always uncordon worker nodes after restart!
 
 ## Troubleshooting
 
 | Problem | Solution |
 |---------|----------|
-| Pods stuck `Pending` | `kubectl uncordon boomer apollo starbuck` |
-| ArgoCD `OutOfSync` | `argocd app sync --all` |
+| Pods Pending | `kubectl uncordon boomer apollo starbuck` |
+| ArgoCD OutOfSync | `argocd app sync --all` |
 | Port forward fails | `pkill -f "kubectl port-forward"` |
 
 ## Success Criteria
-- ✅ All nodes `Ready` (not `SchedulingDisabled`)
-- ✅ All pods `Running`
-- ✅ PVCs remain `Bound`
-- ✅ Data persists
+- All nodes `Ready`
+- All pods `Running`
+- PVCs remain `Bound`
+- Data persists
+
+---

@@ -124,7 +124,7 @@ def run_verification():
     try:
         result = subprocess.run(
             ["python3", "quick_check.py"],
-            cwd="/home/kin/Documents/glasgow-gitops/admin-scripts",
+            cwd="/home/kin/Documents/glasgow-gitops/admin",
         )
         return result.returncode == 0
     except Exception as e:
