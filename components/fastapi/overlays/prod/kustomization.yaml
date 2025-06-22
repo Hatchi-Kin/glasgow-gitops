@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - deployment.yaml
+  - service.yaml
   - configmap-patch.yaml
   - postgres-prod-sealed-secret.yaml
   - minio-prod-sealed-secret.yaml
