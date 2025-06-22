@@ -3,4 +3,4 @@ kind: Kustomization
 
 patches:
   - path: configmap-patch.yaml
-  - path: deployment-patch.yaml
+  - path: deployment.yaml
