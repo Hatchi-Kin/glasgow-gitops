@@ -10,5 +10,6 @@ resources:
   - postgres-prod-sealed-secret.yaml
   - minio-prod-sealed-secret.yaml
 
-patches:
-  - deployment-patch.yaml
+replicas:
+  - name: fastapi
+    count: 2
