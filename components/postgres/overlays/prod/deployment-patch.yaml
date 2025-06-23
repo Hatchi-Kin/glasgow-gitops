@@ -23,7 +23,9 @@ spec:
                 secretKeyRef:
                   name: postgres-prod-sealed-secret
                   key: password
+          $patch: replace
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
             claimName: postgres-pvc
+      $patch: replace
