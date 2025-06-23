@@ -1,9 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: fastapi-prod
+
 resources:
-  - deployment.yaml
-  - service.yaml
-  - configmap-patch.yaml
+  - ../../base
   - postgres-prod-sealed-secret.yaml
   - minio-prod-sealed-secret.yaml
+
+patchesStrategicMerge:
+  - deployment-patch.yaml
+  - configmap-patch.yaml
+  - service.yaml
