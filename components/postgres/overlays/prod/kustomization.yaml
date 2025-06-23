@@ -9,6 +9,3 @@ resources:
 
 patches:
   - path: deployment-patch.yaml
-    target:
-      kind: Deployment
-      name: postgres
