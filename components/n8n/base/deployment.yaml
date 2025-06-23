@@ -21,4 +21,10 @@ spec:
             - containerPort: 5678
           env:
             - name: N8N_BASIC_AUTH_ACTIVE
+              value: "true"
+            - name: N8N_BASIC_AUTH_USER
+              value: "Glasgow"
+            - name: N8N_BASIC_AUTH_PASSWORD
+              value: "Coloc"
+            - name: N8N_SECURE_COOKIE
               value: "false"
