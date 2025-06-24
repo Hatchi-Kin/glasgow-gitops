@@ -7,3 +7,6 @@ resources:
   - ../../base
   - ingress.yaml
   - n8n-postgres-sealed-secret.yaml
+
+patchesStrategicMerge:
+  - deployment-patch.yaml

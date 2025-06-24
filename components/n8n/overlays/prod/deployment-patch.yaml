@@ -16,6 +16,8 @@ spec:
               value: "5432"
             - name: DB_POSTGRESDB_DATABASE
               value: "n8n"
+            - name: DB_POSTGRESDB_SCHEMA
+              value: "public"
             - name: DB_POSTGRESDB_USER
               valueFrom:
                 secretKeyRef:
