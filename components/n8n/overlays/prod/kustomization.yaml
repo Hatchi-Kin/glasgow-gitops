@@ -6,3 +6,4 @@ namespace: n8n-prod
 resources:
   - ../../base
   - ingress.yaml
+  - n8n-postgres-sealed-secret.yaml
