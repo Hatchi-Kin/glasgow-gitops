@@ -4,21 +4,18 @@ kind: Kustomization
 namespace: glasgow-prod
 
 resources:
-  # Base
   - ../../base
 
-  # Secrets
   - ../../../../secrets/prod/postgres-prod-sealed-secret.yaml
   - ../../../../secrets/prod/minio-prod-sealed-secret.yaml
   - ../../../../secrets/prod/n8n-postgres-prod-sealed-secret.yaml
 
-  # Environment-specific resources (e.g., Ingress for prod)
-  - fastapi/ingress.yaml
-  - fastapi/service.yaml
-  - n8n/ingress.yaml
+patches:
+  - path: fastapi/configmap-patch.yaml
+  - path: minio/deployment-patch.yaml
+  - path: n8n/deployment-patch.yaml
+  - path: postgres/deployment-patch.yaml
 
-patchesStrategicMerge:
-  - fastapi/configmap-patch.yaml
-  - minio/deployment-patch.yaml
-  - n8n/deployment-patch.yaml
-  - postgres/deployment-patch.yaml
+commonLabels:
+  environment: prod
+  app.kubernetes.io/managed-by: kustomize
