@@ -12,17 +12,17 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: db
+                  key: POSTGRES_DB
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: username
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: password
+                  key: POSTGRES_PASSWORD
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
