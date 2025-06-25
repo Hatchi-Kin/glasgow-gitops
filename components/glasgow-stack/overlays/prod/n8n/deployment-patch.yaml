@@ -21,10 +21,10 @@ spec:
             - name: DB_POSTGRESDB_USER
               valueFrom:
                 secretKeyRef:
-                  name: n8n-postgres-sealed-secret
+                  name: n8n-secret
                   key: username
             - name: DB_POSTGRESDB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: n8n-postgres-sealed-secret
+                  name: n8n-secret
                   key: password
