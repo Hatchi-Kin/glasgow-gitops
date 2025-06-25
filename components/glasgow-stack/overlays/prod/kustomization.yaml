@@ -5,10 +5,9 @@ namespace: glasgow-prod
 
 resources:
   - ../../base
-
-  - ../../../../secrets/prod/postgres-prod-sealed-secret.yaml
-  - ../../../../secrets/prod/minio-prod-sealed-secret.yaml
-  - ../../../../secrets/prod/n8n-postgres-prod-sealed-secret.yaml
+  - ../../secrets/prod/postgres-prod-sealed-secret.yaml
+  - ../../secrets/prod/minio-prod-sealed-secret.yaml
+  - ../../secrets/prod/n8n-postgres-prod-sealed-secret.yaml
 
 patches:
   - path: fastapi/configmap-patch.yaml
@@ -16,6 +15,8 @@ patches:
   - path: n8n/deployment-patch.yaml
   - path: postgres/deployment-patch.yaml
 
-commonLabels:
-  environment: prod
-  app.kubernetes.io/managed-by: kustomize
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/managed-by: kustomize
+      environment: prod
