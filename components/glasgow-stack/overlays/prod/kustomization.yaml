@@ -1,20 +1,21 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace:
-  glasgow-prod
+namespace: glasgow-prod
 
 resources:
   - ../../base
+
   - ../../../../secrets/prod/postgres-prod-sealed-secret.yaml
   - ../../../../secrets/prod/minio-prod-sealed-secret.yaml
   - ../../../../secrets/prod/n8n-postgres-prod-sealed-secret.yaml
-  - fastapi/ingress.yaml
-  - fastapi/service.yaml
-  - n8n/ingress.yaml
 
 patches:
   - path: fastapi/configmap-patch.yaml
   - path: minio/deployment-patch.yaml
   - path: n8n/deployment-patch.yaml
   - path: postgres/deployment-patch.yaml
+
+commonLabels:
+  environment: prod
+  app.kubernetes.io/managed-by: kustomize
