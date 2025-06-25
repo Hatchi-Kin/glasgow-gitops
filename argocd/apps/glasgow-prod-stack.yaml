@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: 'https://github.com/Hatchi-Kin/glasgow-gitops.git'
     targetRevision: main
-    path: components/glasgow-stack/overlays/prod
+    path: components/glasgow-stack/overlays
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: glasgow-prod
