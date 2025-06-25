@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: fastapi-config
 data:
-  DATABASE_URL: ""
   MINIO_ENDPOINT: "minio-service.minio:9000"
   POSTGRES_HOST: "postgres-service.postgres"
   POSTGRES_PORT: "5432"
