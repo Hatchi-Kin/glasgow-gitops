@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: fastapi-prod
+  name: glasgow-prod-stack
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: 'https://github.com/Hatchi-Kin/glasgow-gitops.git'
     targetRevision: main
-    path: components/fastapi/overlays/prod
+    path: components/glasgow-stack/overlays/prod
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: fastapi-prod
+    namespace: glasgow-prod
   syncPolicy:
     automated:
       prune: true

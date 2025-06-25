@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: glasgow-prod
+
+resources:
+  # Base
+  - ../../base
+
+  # Secrets
+  - ../../../../secrets/postgres-prod-sealed-secret.yaml
+  - ../../../../secrets/minio-prod-sealed-secret.yaml
+  - ../../../../secrets/n8n-postgres-prod-sealed-secret.yaml
+
+  # Environment-specific resources (e.g., Ingress for prod)
+  - fastapi/ingress.yaml
+  - fastapi/service.yaml
+  - n8n/ingress.yaml
+
+patchesStrategicMerge:
+  - fastapi/configmap-patch.yaml
+  - minio/deployment-patch.yaml
+  - n8n/deployment-patch.yaml
+  - postgres/deployment-patch.yaml

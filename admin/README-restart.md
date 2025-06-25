@@ -6,9 +6,9 @@ data:
   POSTGRES_PASSWORD: "AdamaPssWHjki58e"
   
 name: minio-secret
-stringData:
+ stringData:
   root-user: GalacticaMiniOHjki58e
-  root-password: AdamaUserMinioHjki58e 
+  root-password: AdamaUserMinioHjki58e
 -->
 
 

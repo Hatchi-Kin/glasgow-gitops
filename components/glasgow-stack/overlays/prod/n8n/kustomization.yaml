@@ -6,7 +6,7 @@ namespace: n8n-prod
 resources:
   - ../../base
   - ingress.yaml
-  - n8n-postgres-sealed-secret.yaml
+  - ../../../../secrets/minio/prod/n8n-postgres-prod-sealed-secret.yaml
 
 patchesStrategicMerge:
   - deployment-patch.yaml

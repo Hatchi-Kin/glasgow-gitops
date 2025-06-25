@@ -6,9 +6,9 @@ namespace: fastapi-prod
 resources:
   - ../../base
   - service.yaml
-  - postgres-prod-sealed-secret.yaml
-  - minio-prod-sealed-secret.yaml
   - ingress.yaml
+  - ../../../../secrets/postgres/prod/postgres-prod-sealed-secret.yaml
+  - ../../../../secrets/minio/prod/minio-prod-sealed-secret.yaml
 
 patchesStrategicMerge:
   - configmap-patch.yaml

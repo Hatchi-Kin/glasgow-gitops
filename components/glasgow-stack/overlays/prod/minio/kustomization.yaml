@@ -1,11 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: postgres-prod
+namespace: minio-prod
 
 resources:
   - ../../base
-  - postgres-prod-sealed-secret.yaml
+  - ../../../../secrets/minio/prod/minio-prod-sealed-secret.yaml
 
 patches:
   - path: deployment-patch.yaml
