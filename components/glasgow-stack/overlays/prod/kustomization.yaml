@@ -8,9 +8,9 @@ resources:
   - ../../base
 
   # Secrets
-  - ../../../../secrets/postgres-prod-sealed-secret.yaml
-  - ../../../../secrets/minio-prod-sealed-secret.yaml
-  - ../../../../secrets/n8n-postgres-prod-sealed-secret.yaml
+  - ../../../../secrets/prod/postgres-prod-sealed-secret.yaml
+  - ../../../../secrets/prod/minio-prod-sealed-secret.yaml
+  - ../../../../secrets/prod/n8n-postgres-prod-sealed-secret.yaml
 
   # Environment-specific resources (e.g., Ingress for prod)
   - fastapi/ingress.yaml
