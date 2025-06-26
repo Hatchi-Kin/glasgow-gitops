@@ -1,21 +1,24 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-# Inherit all resources from the base directory
-bases:
+# Use 'resources' to point to the base and other files/directories.
+# This replaces the deprecated 'bases' field and fixes the warning.
+resources:
+  # 1. Reference the base directory
   - ../../base
+
+  # 2. Reference the NEW, local path to the secrets
+  - secrets/postgres-prod-sealed-secret.yaml
+  - secrets/minio-prod-sealed-secret.yaml
+  - secrets/n8n-postgres-prod-sealed-secret.yaml
+  
+  # 3. Reference other overlay-specific resources
+  - fastapi/ingress.yaml
+  - fastapi/service.yaml
+  - n8n/ingress.yaml
 
 # Set the namespace for all resources in this overlay
 namespace: glasgow-prod
-
-# Include additional overlay-specific resources and secrets
-resources:
-  - ../../secrets/prod/postgres-prod-sealed-secret.yaml
-  - ../../secrets/prod/minio-prod-sealed-secret.yaml
-  - ../../secrets/prod/n8n-postgres-prod-sealed-secret.yaml
-  - fastapi/ingress.yaml
-  - fastapi/service.yaml # This service is specific to the overlay
-  - n8n/ingress.yaml
 
 # Apply patches to modify the base resources
 patches:
