@@ -9,12 +9,7 @@ resources:
   - secrets/prod/postgres-prod-sealed-secret.yaml
   - secrets/prod/minio-prod-sealed-secret.yaml
   - secrets/prod/n8n-postgres-prod-sealed-secret.yaml
-
-patches:
-  - path: overlays/prod/fastapi/configmap-patch.yaml
-  - path: overlays/prod/minio/deployment-patch.yaml
-  - path: overlays/prod/n8n/deployment-patch.yaml
-  - path: overlays/prod/postgres/deployment-patch.yaml
+  - overlays/prod 
 
 labels:
   - includeSelectors: true
