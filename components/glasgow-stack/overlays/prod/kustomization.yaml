@@ -1,8 +1,56 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+# Inherit all resources from the base directory
+bases:
+  - ../../base
+
+# Set the namespace for all resources in this overlay
+namespace: glasgow-prod
+
+# Include additional overlay-specific resources and secrets
 resources:
-  - fastapi
-  - n8n
-  - minio
-  - postgres
+  - ../../secrets/prod/postgres-prod-sealed-secret.yaml
+  - ../../secrets/prod/minio-prod-sealed-secret.yaml
+  - ../../secrets/prod/n8n-postgres-prod-sealed-secret.yaml
+  - fastapi/ingress.yaml
+  - fastapi/service.yaml # This service is specific to the overlay
+  - n8n/ingress.yaml
+
+# Apply patches to modify the base resources
+patches:
+  # FastAPI Patches
+  - path: fastapi/configmap-patch.yaml
+    target:
+      kind: ConfigMap
+      name: fastapi-config
+      
+  # MinIO Patches
+  - path: minio/deployment-patch.yaml
+    target:
+      kind: Deployment
+      name: minio
+
+  # n8n Patches
+  - path: n8n/deployment-patch.yaml
+    target:
+      kind: Deployment
+      name: n8n
+      
+  # Postgres Patches
+  - path: postgres/deployment-patch.yaml
+    target:
+      kind: Deployment
+      name: postgres
+
+# Use the 'replicas' transformer to change the replica count for the fastapi deployment
+replicas:
+  - name: fastapi
+    count: 2
+
+# Add common labels to all generated resources
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/managed-by: kustomize
+      environment: prod
