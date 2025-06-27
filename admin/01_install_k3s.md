@@ -1,81 +1,82 @@
-# K3s Homelab Cluster
+# K3s Homelab Cluster Setup
 
-A simple bare-metal K3s cluster for learning and homelab use.
+This is my personal cheat sheet for bootstrapping the K3s cluster from scratch.
 
-## Nodes
+## 
+ Prerequisites
 
-| Hostname   | Role           | Specs           | IP              |
-|------------|----------------|-----------------|-----------------|
-| adama      | control plane  | i5-7200U, 8GB   | 192.168.1.20    |
-| boomer     | worker         | N150, 16GB      | 192.168.1.21    |
-| apollo     | worker         | N150, 16GB      | 192.168.1.22    |
-| starbuck   | worker         | N150, 16GB      | 192.168.1.23    |
+- All nodes have a user `bsg` with passwordless `sudo` access.
+- SSH access is configured for all nodes.
+- A static IP is assigned to the control plane node (`adama`).
 
-## Install Steps
+## 
+ Node Layout
 
-1. **Install K3s on control plane:**
-   ```sh
-   ssh bsg@adama
-   curl -sfL https://get.k3s.io | sh -
-   ```
-2. **Get node token:**
-   ```sh
-   sudo cat /var/lib/rancher/k3s/server/node-token
-   ```
-3. **Join workers:**
-   ```sh
-   ssh bsg@<worker>
-   curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.20:6443 K3S_TOKEN=<NODE_TOKEN> sh -s - agent
-   ```
-4. **Verify:**
-   ```sh
-   kubectl get nodes
-   ```
-5. **Label workers:**
-   ```sh# MinIO Access Guide
+| Hostname   | Role           | IP              | Notes                               |
+|------------|----------------|-----------------|-------------------------------------|
+| adama      | control plane  | 192.168.1.20    | Runs the Kubernetes API server.     |
+| boomer     | worker         | 192.168.1.21    | Runs application pods.              |
+| apollo     | worker         | 192.168.1.22    | Runs application pods.              |
+| starbuck   | worker         | 192.168.1.23    | Runs application pods.              |
 
-MinIO provides S3-compatible object storage and a web UI for management.
+## 
+ Installation Workflow
 
-## 🚪 Accessing the MinIO Console (UI)
+### 1. Install K3s on the Control Plane (`adama`)
 
-To access the MinIO web UI (console) on port 9001:
+This command downloads and runs the K3s installer. It sets up this node as the master.
 
-```bash
-kubectl -n minio-prod port-forward svc/minio-service 9001:9001
+```sh
+ssh bsg@adama "curl -sfL https://get.k3s.io | sh -"
 ```
 
-Then open your browser and go to:  
-[http://localhost:9001](http://localhost:9001)
+### 2. Get the Cluster Join Token
 
-**Login credentials:**  
-- Username/Password: from your sealed secret (see `minio-prod-sealed-secret.yaml`)
-- Or retrieve from the cluster:
-  ```sh
-  kubectl -n minio-prod get secret minio-secret -o jsonpath="{.data.root-user}" | base64 -d; echo
-  kubectl -n minio-prod get secret minio-secret -o jsonpath="{.data.root-password}" | base64 -d; echo
-  ```
+The token is like a password that allows other nodes to join the cluster.
 
-## 📦 S3 API
+```sh
+# Run this on adama
+ssh bsg@adama "sudo cat /var/lib/rancher/k3s/server/node-token"
+```
 
-- The S3 API is available at `http://localhost:9000` (via port-forward if needed).
+### 3. Join Worker Nodes
+
+This command installs the K3s agent on the worker nodes and connects them to the control plane.
+
+```sh
+# Replace <WORKER_HOSTNAME> with boomer, apollo, starbuck
+# Replace <NODE_TOKEN> with the token from step 2
+ssh bsg@<WORKER_HOSTNAME> \
+  "curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.20:6443 K3S_TOKEN=<NODE_TOKEN> sh -"
+```
+
+### 4. Get `kubeconfig` for Remote Access
+
+This is the most important step for managing the cluster from my local machine.
+
+1.  **Copy the config file** on `adama`.
+2.  **Replace the server URL** from `127.0.0.1` to the actual IP of `adama`.
+3.  **Securely copy it** to my local machine.
+
+```sh
+# Run this from your local machine
+ssh bsg@adama "sudo cp /etc/rancher/k3s/k3s.yaml /home/bsg/k3s.yaml && sudo chown bsg:bsg /home/bsg/k3s.yaml"
+scp bsg@adama:/home/bsg/k3s.yaml ~/.kube/config
+sed -i 's/127.0.0.1/192.168.1.20/' ~/.kube/config
+```
+
+### 5. Verify Cluster Status
+
+Now, from my local machine, I can run `kubectl` commands.
+
+```sh
+# Check that all nodes are Ready
+kubectl get nodes -o wide
+
+# Check that all system pods are running
+kubectl get pods -A
+```
 
 ---
 
-**Tip:**  
-You can find your MinIO credentials in the `minio-prod-sealed-secret.yaml` or by decoding the `minio-secret` in the `minio-prod` namespace.
-   kubectl label node boomer node-role.kubernetes.io/worker=worker
-   kubectl label node apollo node-role.kubernetes.io/worker=worker
-   kubectl label node starbuck node-role.kubernetes.io/worker=worker
-   ```
-6. **Remote kubeconfig:**
-   ```sh
-   sudo cp /etc/rancher/k3s/k3s.yaml ~/k3s-remote.yaml
-   sed -i 's/127.0.0.1/192.168.1.20/' ~/k3s-remote.yaml
-   scp bsg@192.168.1.20:~/k3s-remote.yaml ~/k3s.yaml
-   export KUBECONFIG=~/k3s.yaml
-   ```
-
----
-
-- [K3s Docs](https://k3s.io/)
-- [Kubernetes Docs](https://kubernetes.io/docs/)
+```
