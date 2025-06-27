@@ -226,9 +226,10 @@ def check_k8s_services():
     """Check status of key Kubernetes services"""
     services = {
         "ArgoCD": ("argocd", "app.kubernetes.io/name=argocd-server"),
-        "MinIO": ("minio-prod", "app=minio"),
-        "PostgreSQL": ("postgres-prod", "app=postgres"),
-        "FastAPI": ("fastapi-prod", "app=fastapi"),
+        "MinIO": ("glasgow-prod", "app=minio"),
+        "PostgreSQL": ("glasgow-prod", "app=postgres"),
+        "FastAPI": ("glasgow-prod", "app=fastapi"),
+        "n8n": ("glasgow-prod", "app=n8n"),
     }
 
     print(f"\n{CYAN}=== Applications ==={RESET}")
