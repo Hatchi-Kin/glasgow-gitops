@@ -19,12 +19,17 @@ spec:
           image: postgres:15
           ports:
             - containerPort: 5432
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 60
+            periodSeconds: 30
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
           resources:
             requests:
-              memory: "512"
+              memory: "512Mi"
               cpu: "300m"
             limits:
               memory: "1024Mi"
