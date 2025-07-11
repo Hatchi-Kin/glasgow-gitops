@@ -18,7 +18,4 @@ spec:
                 secretKeyRef:
                   name: minio-secret
                   key: root-password
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: minio-pvc
+
