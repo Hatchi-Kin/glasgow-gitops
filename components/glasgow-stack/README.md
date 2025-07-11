@@ -30,4 +30,11 @@ kubectl kustomize components/glasgow-stack/overlays/prod
 kubectl kustomize components/glasgow-stack/base
 ```
 
+## 🌐 Accessing Services
+
+To access services from your local network without editing your `hosts` file, we use `nip.io`. This service provides a magic domain that resolves to your local IP.
+
+For example, to access n8n, you can use the following URL:
+`http://n8n.192.168.1.20.nip.io`
+
 ---
