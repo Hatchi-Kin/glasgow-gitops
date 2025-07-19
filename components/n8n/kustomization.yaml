@@ -6,5 +6,6 @@ resources:
   - service.yaml
   - secret.yaml
   - ingress.yaml
+  - db-init-job.yaml
 
 namespace: glasgow-prod
