@@ -11,7 +11,7 @@ spec:
     path: components/postgres
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: postgres
+    namespace: glasgow-prod
   syncPolicy:
     automated:
       prune: true
