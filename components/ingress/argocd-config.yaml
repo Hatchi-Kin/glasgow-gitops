@@ -13,3 +13,4 @@ metadata:
   namespace: argocd
 data:
   url: "http://argocd.192.168.1.20.nip.io"
+  application.instanceLabelKey: argocd.argoproj.io/instance
