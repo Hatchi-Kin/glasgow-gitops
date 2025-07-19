@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: fastapi
-          image: hatchikin/glasgow-fastapi:latest
+          image: hatchikin/glasgow-fastapi:main
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
