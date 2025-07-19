@@ -18,19 +18,12 @@ spec:
         - /bin/bash
         - -c
         - |
-          echo "Creating n8n user and database..."
+          echo "Creating n8n database for adama user..."
           export PGPASSWORD="$POSTGRES_PASSWORD"
-          
-          # Create user if it doesn't exist
-          psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -tc "SELECT 1 FROM pg_user WHERE usename = 'n8n'" | grep -q 1 || 
-          psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "CREATE USER n8n WITH PASSWORD '$N8N_DB_PASSWORD';"
           
           # Create database if it doesn't exist
           psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -tc "SELECT 1 FROM pg_database WHERE datname = 'n8n'" | grep -q 1 || 
-          psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "CREATE DATABASE n8n OWNER n8n;"
-          
-          # Grant privileges
-          psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "GRANT ALL PRIVILEGES ON DATABASE n8n TO n8n;"
+          psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "CREATE DATABASE n8n;"
           
           echo "n8n database setup completed successfully!"
         env:
@@ -51,8 +44,3 @@ spec:
             configMapKeyRef:
               name: postgres-config
               key: POSTGRES_DB
-        - name: N8N_DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: n8n-secret
-              key: DB_POSTGRESDB_PASSWORD
