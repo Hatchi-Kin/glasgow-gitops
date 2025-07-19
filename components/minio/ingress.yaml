@@ -5,7 +5,9 @@ metadata:
   labels:
     app: minio
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/backend-protocol: HTTP
+    traefik.ingress.kubernetes.io/router.tls: "false"
 spec:
   rules:
   - host: minio.192.168.1.20.nip.io
