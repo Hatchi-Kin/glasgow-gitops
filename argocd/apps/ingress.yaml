@@ -1,26 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: longhorn
+  name: ingress
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: 'https://github.com/Hatchi-Kin/glasgow-gitops.git'
     targetRevision: main
-    path: components/longhorn
+    path: components/ingress
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: longhorn-system
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-  ignoreDifferences:
-    - group: apiextensions.k8s.io
-      kind: CustomResourceDefinition
-      jsonPointers:
-        - /spec/preserveUnknownFields
-        - /status
