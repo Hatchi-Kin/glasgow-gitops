@@ -18,12 +18,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-  ignoreDifferences:
-    - group: apiextensions.k8s.io
-      kind: CustomResourceDefinition
-      jsonPointers:
-        - /spec/preserveUnknownFields
-        - /status
-        - /spec/versions/*/subresources
-        - /spec/versions/*/additionalPrinterColumns
-        - /metadata/annotations

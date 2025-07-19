@@ -1,29 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: longhorn
+  name: postgres
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: 'https://github.com/Hatchi-Kin/glasgow-gitops.git'
     targetRevision: main
-    path: components/longhorn
+    path: components/postgres
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: longhorn-system
+    namespace: postgres
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-  ignoreDifferences:
-    - group: apiextensions.k8s.io
-      kind: CustomResourceDefinition
-      jsonPointers:
-        - /spec/preserveUnknownFields
-        - /status
-        - /spec/versions/*/subresources
-        - /spec/versions/*/additionalPrinterColumns
-        - /metadata/annotations
