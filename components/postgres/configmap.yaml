@@ -5,3 +5,4 @@ metadata:
 data:
   POSTGRES_DB: glasgow_db
   POSTGRES_USER: glasgow_user
+  PGDATA: /var/lib/postgresql/data/pgdata
