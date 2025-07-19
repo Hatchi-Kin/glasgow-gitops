@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: fastapi-config
-data:
-  POSTGRES_HOST: "postgres-service.glasgow-prod"
-  POSTGRES_PORT: "5432"
-  POSTGRES_DB: "GalacticaDBHjki58e"
-  MINIO_ENDPOINT: "minio-service.glasgow-prod:9000"

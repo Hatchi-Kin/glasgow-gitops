@@ -1,0 +1,6 @@
+# Bootstrap ArgoCD installation
+# Apply this manually first: kubectl apply -f argocd-install.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: argocd
