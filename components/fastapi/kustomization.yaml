@@ -6,5 +6,6 @@ resources:
   - service.yaml
   - configmap.yaml
   - ingress.yaml
+  - hpa.yaml
 
 namespace: glasgow-prod
