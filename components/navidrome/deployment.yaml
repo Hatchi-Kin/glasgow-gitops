@@ -24,6 +24,8 @@ spec:
             - name: music
               mountPath: /music
           env:
+            - name: ND_ENABLEINSIGHTSCOLLECTOR
+              value: "false"
             - name: ND_LOGLEVEL
               value: info
             - name: ND_SCANSCHEDULE
