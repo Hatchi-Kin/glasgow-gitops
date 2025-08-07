@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: navidrome
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/Hatchi-Kin/glasgow-gitops.git'
+    targetRevision: main
+    path: components/navidrome
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: navidrome
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
