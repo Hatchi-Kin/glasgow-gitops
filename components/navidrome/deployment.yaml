@@ -27,6 +27,16 @@ spec:
               value: info
             - name: ND_SCANSCHEDULE
               value: "1h"
+            - name: ND_SECURITY_ADMINUSER
+              valueFrom:
+                secretKeyRef:
+                  name: navidrome-credentials-secret
+                  key: NAVIDROME_ADMIN_USER
+            - name: ND_SECURITY_ADMINPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: navidrome-credentials-secret
+                  key: NAVIDROME_ADMIN_PASSWORD
       volumes:
         - name: data
           persistentVolumeClaim:
