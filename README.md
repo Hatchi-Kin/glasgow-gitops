@@ -26,7 +26,7 @@ All services are accessible via your local network IP with nip.io:
 | **FastAPI** | http://fastapi.192.168.1.20.nip.io | - |
 | **MinIO Console** | http://minio.192.168.1.20.nip.io | `adama` / `commander` |
 | **n8n Workflow** | http://n8n.192.168.1.20.nip.io | `Glasgow` / `Coloc` |
-| **ArgoCD** | https://localhost:8080 | `admin` / see admin password |
+| **ArgoCD** | http://argocd.192.168.1.20.nip.io| `admin` / see admin password |
 
 *Note: Replace `192.168.1.20` with your actual K3s node IP*
 
