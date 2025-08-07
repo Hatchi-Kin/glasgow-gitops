@@ -11,7 +11,7 @@ spec:
     path: components/navidrome
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: navidrome
+    namespace: glasgow-prod
   syncPolicy:
     automated:
       prune: true
