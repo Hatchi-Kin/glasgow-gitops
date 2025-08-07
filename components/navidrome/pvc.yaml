@@ -18,7 +18,7 @@ metadata:
   namespace: glasgow-prod
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: longhorn
   resources:
     requests:
