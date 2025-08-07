@@ -7,4 +7,4 @@ resources:
   - pvc.yaml
   - ingress.yaml
 
-namespace: navidrome
+namespace: glasgow-prod
