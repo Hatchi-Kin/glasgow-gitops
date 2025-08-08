@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: fastapi
+  namespace: glasgow-prod
   labels:
     app: fastapi
 spec:
@@ -98,6 +99,8 @@ spec:
             periodSeconds: 7
             timeoutSeconds: 5
             failureThreshold: 20
+      securityContext:
+        fsGroup: 1000
       volumes:
         - name: navidrome-music
           persistentVolumeClaim:
