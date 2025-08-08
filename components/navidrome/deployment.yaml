@@ -28,8 +28,8 @@ spec:
             value: "false"
           - name: ND_LOGLEVEL
             value: info
-          - name: ND_SCANSCHEDULE
-            value: "1m"
+          - name: ND_SCANNER_SCHEDULE
+            value: "@every 1m"
           - name: ND_ADMINUSER
             valueFrom:
               secretKeyRef:
