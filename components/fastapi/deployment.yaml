@@ -95,8 +95,8 @@ spec:
               path: /health
               port: 8000
               scheme: HTTP
-            initialDelaySeconds: 10
-            periodSeconds: 7
+            initialDelaySeconds: 30
+            periodSeconds: 12
             timeoutSeconds: 5
             failureThreshold: 20
       securityContext:
