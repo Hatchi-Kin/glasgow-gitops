@@ -41,6 +41,19 @@ sudo systemctl status k3s
 kubectl get nodes
 ```
 
+# if SchedulingDisabled
+```sh
+NAME       STATUS                     ROLES                  AGE    VERSION
+adama      Ready,SchedulingDisabled   control-plane,master   116d  
+``` 
+# then 
+```sh
+kubectl uncordon adama
+kubectl uncordon apollo
+kubectl uncordon boomer
+kubectl uncordon starbuck
+```
+
 ### Get ArgoCD Admin Password
 ```bash
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
