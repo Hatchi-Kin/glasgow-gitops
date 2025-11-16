@@ -27,11 +27,31 @@ spec:
                 secretKeyRef:
                   name: fastapi-msv2-api-secret
                   key: secret-key
-            - name: DATABASE_URL
+            - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: fastapi-msv2-api-secret
-                  key: database-url
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: fastapi-config
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: fastapi-config
+                  key: POSTGRES_PORT
             - name: ACCESS_TOKEN_EXPIRE_MINUTES
               valueFrom:
                 configMapKeyRef:
