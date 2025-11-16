@@ -2,14 +2,12 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: fastapi-msv2-api-ingress
+  namespace: glasgow-prod
   labels:
     app: fastapi-msv2-api
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/backend-protocol: HTTP
-    traefik.ingress.kubernetes.io/router.tls: "false"
-    traefik.ingress.kubernetes.io/router.middlewares: traefik-cors-headers@kubernetescrd
-
+    traefik.ingress.kubernetes.io/router.middlewares: glasgow-prod-traefik-cors-headers@kubernetescrd
 spec:
   rules:
     - host: msv2-api.192.168.1.20.nip.io
