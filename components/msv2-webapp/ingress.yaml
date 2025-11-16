@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: msv2-webapp-ingress
+  labels:
+    app: msv2-webapp
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/backend-protocol: HTTP
+    traefik.ingress.kubernetes.io/router.tls: "false"
+spec:
+  rules:
+    - host: msv2-webapp.192.168.1.20.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: msv2-webapp-service
+                port:
+                  number: 80

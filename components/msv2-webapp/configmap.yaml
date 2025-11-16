@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: msv2-webapp-config
+  namespace: glasgow-prod
+data:
+  VITE_API_BASE_URL: "http://fastapi-msv2-api-service.glasgow-prod.svc.cluster.local:8010"
