@@ -8,6 +8,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.middlewares: glasgow-prod-traefik-cors-headers@kubernetescrd
+    traefik.ingress.kubernetes.io/passhostheader: "true"
+    traefik.ingress.kubernetes.io/frontend-entry-points: web
 spec:
   rules:
     - host: msv2-api.192.168.1.20.nip.io

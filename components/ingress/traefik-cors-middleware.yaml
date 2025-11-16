@@ -5,21 +5,11 @@ metadata:
   namespace: glasgow-prod
 spec:
   headers:
-    accessControlAllowCredentials: true
-    accessControlAllowMethods:
-      - "GET"
-      - "POST"
-      - "PUT"
-      - "DELETE"
-      - "PATCH"
-      - "OPTIONS"
-    accessControlAllowHeaders:
-      - "Content-Type"
-      - "Authorization"
-      - "Accept"
-      - "Origin"
-      - "X-Requested-With"
-    accessControlAllowOriginList:
-      - "http://msv2-webapp.192.168.1.20.nip.io"
-    accessControlMaxAge: 100
-    addVaryHeader: true
+    customRequestHeaders:
+      X-Forwarded-Proto: "https"
+    customResponseHeaders:
+      Access-Control-Allow-Origin: "http://msv2-webapp.192.168.1.20.nip.io"
+      Access-Control-Allow-Credentials: "true"
+      Access-Control-Allow-Methods: "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+      Access-Control-Allow-Headers: "Content-Type, Authorization, Accept, Origin, X-Requested-With"
+      Access-Control-Max-Age: "100"
