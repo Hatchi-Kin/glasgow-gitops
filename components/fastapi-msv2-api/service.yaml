@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-msv2-api-service
+  labels:
+    app: fastapi-msv2-api
+spec:
+  selector:
+    app: fastapi-msv2-api
+  ports:
+    - name: http
+      port: 8010
+      targetPort: 8010
+      protocol: TCP
+  type: ClusterIP

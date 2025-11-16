@@ -6,5 +6,6 @@ resources:
 - minio-sealed-secret.yaml
 - n8n-sealed-secret.yaml
 - navidrome-sealed-secret.yaml
+- fastapi-msv2-api-sealed-secret.yaml
 
 namespace: glasgow-prod
