@@ -62,6 +62,11 @@ spec:
                 configMapKeyRef:
                   name: fastapi-msv2-api-config
                   key: REFRESH_TOKEN_EXPIRE_DAYS
+            - name: CORS_ORIGINS
+              valueFrom:
+                configMapKeyRef:
+                  name: fastapi-msv2-api-config
+                  key: CORS_ORIGINS
           resources:
             requests:
               memory: "256Mi"
