@@ -7,7 +7,6 @@ metadata:
     app: fastapi-msv2-api
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.middlewares: glasgow-prod-traefik-cors-headers@kubernetescrd
     traefik.ingress.kubernetes.io/passhostheader: "true"
     traefik.ingress.kubernetes.io/frontend-entry-points: web
 spec:
