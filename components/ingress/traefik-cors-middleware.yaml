@@ -4,15 +4,22 @@ metadata:
   name: traefik-cors-headers
   namespace: glasgow-prod
 spec:
-  cors:
-    allowedOrigins:
-      - "http://msv2-webapp.192.168.1.20.nip.io"
-    allowedMethods:
+  headers:
+    accessControlAllowCredentials: true
+    accessControlAllowMethods:
       - "GET"
       - "POST"
       - "PUT"
       - "DELETE"
+      - "PATCH"
       - "OPTIONS"
-    allowedHeaders:
-      - "*"
-    allowCredentials: true
+    accessControlAllowHeaders:
+      - "Content-Type"
+      - "Authorization"
+      - "Accept"
+      - "Origin"
+      - "X-Requested-With"
+    accessControlAllowOriginList:
+      - "http://msv2-webapp.192.168.1.20.nip.io"
+    accessControlMaxAge: 100
+    addVaryHeader: true
