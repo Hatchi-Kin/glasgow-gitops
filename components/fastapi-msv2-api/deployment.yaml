@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: fastapi-msv2-api
-          image: hatchikin/fastapi-msv2-api:main
+          image: hatchikin/msv2-api:main
           imagePullPolicy: Always
           ports:
             - containerPort: 8010
