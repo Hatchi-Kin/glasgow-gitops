@@ -16,6 +16,3 @@ spec:
     allowedHeaders:
       - "*"
     allowCredentials: true
-    exposedHeaders:
-      - "*"
-    maxAge: 100
