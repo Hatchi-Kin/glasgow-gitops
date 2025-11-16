@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: traefik-cors-headers
+  namespace: glasgow-prod
+spec:
+  headers:
+    accessControlAllowMethods: # Allow all methods that your API uses
+      - "GET"
+      - "POST"
+      - "PUT"
+      - "DELETE"
+      - "OPTIONS"
+    accessControlAllowHeaders: # Allow all headers that your API uses (e.g., Authorization, Content-Type)
+      - "*"
+    accessControlAllowOrigin: "http://msv2-webapp.192.168.1.20.nip.io"
+    accessControlMaxAge: 100
+    accessControlAllowCredentials: true

@@ -8,6 +8,8 @@ metadata:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/backend-protocol: HTTP
     traefik.ingress.kubernetes.io/router.tls: "false"
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-cors-headers@kubernetescrd
+
 spec:
   rules:
     - host: msv2-api.192.168.1.20.nip.io

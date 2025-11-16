@@ -5,3 +5,4 @@ resources:
   - argocd-ingress.yaml
   - longhorn-ingress.yaml
   - argocd-config.yaml
+  - traefik-cors-middleware.yaml
