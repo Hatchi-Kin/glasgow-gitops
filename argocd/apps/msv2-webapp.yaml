@@ -7,7 +7,7 @@ metadata:
     argocd-image-updater.argoproj.io/image-list: webapp=hatchikin/msv2-webapp
     argocd-image-updater.argoproj.io/webapp.update-strategy: latest
     argocd-image-updater.argoproj.io/webapp.allow-tags: regexp:^main.*
-    argocd-image-updater.argoproj.io/write-back-method: argocd
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:
