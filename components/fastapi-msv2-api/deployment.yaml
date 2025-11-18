@@ -67,6 +67,31 @@ spec:
                 configMapKeyRef:
                   name: fastapi-msv2-api-config
                   key: CORS_ORIGINS
+            - name: MINIO_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: fastapi-msv2-api-config
+                  key: MINIO_ENDPOINT
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: MINIO_ROOT_USER
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: MINIO_ROOT_PASSWORD
+            - name: MINIO_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: fastapi-msv2-api-config
+                  key: MINIO_BUCKET
+            - name: MINIO_SECURE
+              valueFrom:
+                configMapKeyRef:
+                  name: fastapi-msv2-api-config
+                  key: MINIO_SECURE
           resources:
             requests:
               memory: "256Mi"

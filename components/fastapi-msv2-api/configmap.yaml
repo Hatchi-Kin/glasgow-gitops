@@ -6,3 +6,6 @@ data:
   ACCESS_TOKEN_EXPIRE_MINUTES: "15"
   REFRESH_TOKEN_EXPIRE_DAYS: "7"
   CORS_ORIGINS: '["http://localhost:5173","http://127.0.0.1:5173","http://localhost","http://127.0.0.1","http://msv2-webapp.192.168.1.20.nip.io"]'
+  MINIO_ENDPOINT: "minio-service:9000"
+  MINIO_BUCKET: "megaset"
+  MINIO_SECURE: "False"
