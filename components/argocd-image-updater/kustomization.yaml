@@ -4,7 +4,8 @@ namespace: argocd
 resources:
   - https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/v0.12.2/manifests/install.yaml
   - argocd-image-updater-git-creds-sealed.yaml
-  - dockerhub-creds-sealed.yaml
+  - dockerhub-pull-secret-sealed.yaml
+
 
 patchesStrategicMerge:
   - |-
@@ -33,5 +34,5 @@ patchesStrategicMerge:
         - name: Docker Hub
           api_url: https://registry-1.docker.io
           ping: yes
-          credentials: secret:argocd/dockerhub-creds
+          credentials: pullsecret:argocd/dockerhub-pull-secret
           default: yes
