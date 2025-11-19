@@ -1,0 +1,3 @@
+kustomize:
+  images:
+  - hatchikin/msv2-api:main-e117e05
