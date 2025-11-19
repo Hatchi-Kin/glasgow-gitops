@@ -3,12 +3,7 @@ kind: Application
 metadata:
   name: fastapi-msv2-api
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: api=hatchikin/msv2-api
-    argocd-image-updater.argoproj.io/api.update-strategy: latest
-    argocd-image-updater.argoproj.io/api.allow-tags: regexp:^(main-[a-f0-9]+|latest|main)$
-    argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/api.force-update: "true"
+  annotations: {}
 spec:
   project: default
   source:
