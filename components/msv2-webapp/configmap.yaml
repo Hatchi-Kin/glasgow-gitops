@@ -4,4 +4,4 @@ metadata:
   name: msv2-webapp-config
   namespace: glasgow-prod
 data:
-  VITE_API_BASE_URL: "https://api.msv2.ovh"
+  VITE_API_BASE_URL: "https://www.api.msv2.ovh"
