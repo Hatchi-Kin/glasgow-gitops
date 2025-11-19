@@ -7,9 +7,30 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/backend-protocol: HTTP
-    traefik.ingress.kubernetes.io/router.tls: "false"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   rules:
+    - host: webapp.msv2.ovh
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: msv2-webapp-service
+                port:
+                  number: 80
+    - host: www.webapp.msv2.ovh
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: msv2-webapp-service
+                port:
+                  number: 80
     - host: msv2-webapp.192.168.1.20.nip.io
       http:
         paths:
@@ -20,3 +41,8 @@ spec:
                 name: msv2-webapp-service
                 port:
                   number: 80
+  tls:
+    - hosts:
+        - webapp.msv2.ovh
+        - www.webapp.msv2.ovh
+      secretName: msv2-webapp-tls-secret

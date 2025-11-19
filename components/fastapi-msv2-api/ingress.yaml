@@ -8,9 +8,31 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/passhostheader: "true"
-    traefik.ingress.kubernetes.io/frontend-entry-points: web
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    traefik.ingress.kubernetes.io/router.middlewares: glasgow-prod-traefik-cors-headers@kubernetescrd
 spec:
   rules:
+    - host: api.msv2.ovh
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: fastapi-msv2-api-service
+                port:
+                  number: 8010
+    - host: www.api.msv2.ovh
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: fastapi-msv2-api-service
+                port:
+                  number: 8010
     - host: msv2-api.192.168.1.20.nip.io
       http:
         paths:
@@ -21,3 +43,8 @@ spec:
                 name: fastapi-msv2-api-service
                 port:
                   number: 8010
+  tls:
+    - hosts:
+        - api.msv2.ovh
+        - www.api.msv2.ovh
+      secretName: fastapi-msv2-api-tls-secret

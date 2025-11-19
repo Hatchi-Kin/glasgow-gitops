@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: msv2-webapp
-          image: hatchikin/msv2-webapp:main # REPLACE WITH YOUR ACTUAL REACT APP IMAGE
+          image: hatchikin/msv2-webapp:main
           imagePullPolicy: Always
           ports:
             - containerPort: 80
