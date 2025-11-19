@@ -6,30 +6,32 @@ resources:
   - argocd-image-updater-git-creds-sealed.yaml
   - dockerhub-creds-sealed.yaml
 
-patches:
-  - target:
-      kind: Deployment
+patchesStrategicMerge:
+  - |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
       name: argocd-image-updater
-    patch: |-
-      - op: add
-        path: /spec/template/spec/containers/0/args/-
-        value: --interval=5m
-  - target:
-      kind: ConfigMap
+    spec:
+      template:
+        spec:
+          containers:
+          - name: argocd-image-updater
+            args:
+            - run
+            - --interval=5m
+  - |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
       name: argocd-image-updater-config
-    patch: |-
-      - op: add
-        path: /data/git.user
-        value: argocd-image-updater
-      - op: add
-        path: /data/git.email
-        value: argocd-image-updater@noreply.github.com
-      - op: add
-        path: /data/registries.conf
-        value: |
-          registries:
-          - name: Docker Hub
-            api_url: https://registry-1.docker.io
-            ping: yes
-            credentials: secret:argocd/dockerhub-creds
-            default: yes
+    data:
+      git.user: argocd-image-updater
+      git.email: argocd-image-updater@noreply.github.com
+      registries.conf: |
+        registries:
+        - name: Docker Hub
+          api_url: https://registry-1.docker.io
+          ping: yes
+          credentials: secret:argocd/dockerhub-creds
+          default: yes
