@@ -5,14 +5,12 @@ resources:
   - https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/v0.12.2/manifests/install.yaml
   - argocd-image-updater-git-creds-sealed.yaml
 
-patches:
-  - patch: |-
-      - op: add
-        path: /data/git.user
-        value: argocd-image-updater
-      - op: add
-        path: /data/git.email
-        value: argocd-image-updater@noreply.github.com
-    target:
-      kind: ConfigMap
+patchesStrategicMerge:
+  - |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
       name: argocd-image-updater-config
+    data:
+      git.user: argocd-image-updater
+      git.email: argocd-image-updater@noreply.github.com
