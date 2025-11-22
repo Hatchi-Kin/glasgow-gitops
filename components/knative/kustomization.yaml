@@ -18,3 +18,4 @@ patches:
         namespace: knative-serving
       data:
         ingress-class: "kourier.ingress.networking.knative.dev"
+  - path: patch-features.yaml
