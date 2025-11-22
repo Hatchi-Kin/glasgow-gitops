@@ -1,0 +1,59 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: msv2-inference
+  namespace: glasgow-prod
+  labels:
+    app: msv2-inference
+    networking.knative.dev/visibility: cluster-local
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/scale-to-zero-grace-period: "3600s"
+        autoscaling.knative.dev/min-scale: "0"
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: adama
+      containers:
+        - image: hatchikin/msv2-inference-gpu:latest
+          ports:
+            - containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+          env:
+            - name: MINIO_ENDPOINT
+              value: "minio:9000"
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: MINIO_ROOT_USER
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: MINIO_ROOT_PASSWORD
+            - name: MINIO_SECURE
+              value: "False"
+            - name: MODEL_BUCKET
+              value: "megaset-sqlite"
+            - name: MODEL_FILE
+              value: "openl3_embedding.onnx"
+            - name: AUDIO_BUCKET
+              value: "megaset"
+            - name: MODEL_LOCAL_PATH
+              value: "openl3_embedding.onnx"

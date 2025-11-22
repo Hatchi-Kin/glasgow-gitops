@@ -20,7 +20,7 @@ patchesStrategicMerge:
           - name: argocd-image-updater
             args:
             - run
-            - --interval=5m
+            - --interval=10m
   - |-
     apiVersion: v1
     kind: ConfigMap
