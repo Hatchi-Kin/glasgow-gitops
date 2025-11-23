@@ -19,7 +19,7 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: adama
       containers:
-        - image: hatchikin/msv2-inference-gpu:v0.9
+        - image: hatchikin/msv2-inference:v0.11
           ports:
             - containerPort: 8000
           livenessProbe:
