@@ -36,7 +36,7 @@ spec:
               nvidia.com/gpu: 1
           env:
             - name: MINIO_ENDPOINT
-              value: "minio:9000"
+              value: "minio-service.glasgow-prod.svc.cluster.local:9000"
             - name: MINIO_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
