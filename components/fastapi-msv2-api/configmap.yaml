@@ -9,4 +9,4 @@ data:
   MINIO_ENDPOINT: "minio-service:9000"
   MINIO_BUCKET: "megaset"
   MINIO_SECURE: "False"
-  MSV2_INFERENCE_URL: "http://msv2-inference.glasgow-prod.svc.cluster.local:8000"
+  MSV2_INFERENCE_URL: "http://msv2-inference.glasgow-prod.svc.cluster.local"
