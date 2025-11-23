@@ -1,3 +1,3 @@
 kustomize:
   images:
-  - hatchikin/msv2-api:main-304b14f
+  - hatchikin/msv2-api:main-c103fed
