@@ -92,6 +92,11 @@ spec:
                 configMapKeyRef:
                   name: fastapi-msv2-api-config
                   key: MINIO_SECURE
+            - name: MSV2_INFERENCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: fastapi-msv2-api-config
+                  key: MSV2_INFERENCE_URL
           resources:
             requests:
               memory: "256Mi"
