@@ -19,3 +19,4 @@ patches:
       data:
         ingress-class: "kourier.ingress.networking.knative.dev"
   - path: patch-features.yaml
+  - path: patch-autoscaler.yaml
