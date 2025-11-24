@@ -62,9 +62,7 @@ spec:
                 secretKeyRef:
                   name: minio-secret
                   key: MINIO_ROOT_PASSWORD
-          volumeMounts:
-            - name: navidrome-music
-              mountPath: /music
+
           resources:
             requests:
               memory: "256Mi"
@@ -101,7 +99,3 @@ spec:
             failureThreshold: 20
       securityContext:
         fsGroup: 1000
-      volumes:
-        - name: navidrome-music
-          persistentVolumeClaim:
-            claimName: navidrome-music-pvc

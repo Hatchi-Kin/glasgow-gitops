@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../msv2-inference"
+		},
+		{
+			"path": "../../../msv2-webapp"
+		},
+		{
+			"path": "../../../msv2-api"
+		},
+		{
+			"path": "../../../glasgow-api"
+		}
+	],
+	"settings": {}
+}
