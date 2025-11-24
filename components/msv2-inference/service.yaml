@@ -35,13 +35,16 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 5
           resources:
-            requests:
-              memory: "512Mi"
-              cpu: "500m"
             limits:
-              memory: "2Gi"
+              memory: "4Gi"
               cpu: "1000m"
+              nvidia.com/gpu: 1
+            requests:
+              memory: "2Gi"
+              cpu: "500m"
           env:
+            - name: USE_GPU
+              value: "True"
             - name: MINIO_ENDPOINT
               value: "minio-service.glasgow-prod.svc.cluster.local:9000"
             - name: MINIO_ACCESS_KEY
