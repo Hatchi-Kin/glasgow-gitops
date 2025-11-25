@@ -82,6 +82,27 @@ spec:
                 secretKeyRef:
                   name: minio-secret
                   key: MINIO_ROOT_PASSWORD
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: msv2-api-external-api-keys
+                  key: ANTHROPIC_API_KEY
+
+            - name: GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: msv2-api-external-api-keys
+                  key: GOOGLE_API_KEY
+            - name: SPOTIFY_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: msv2-api-external-api-keys
+                  key: SPOTIFY_CLIENT_ID
+            - name: SPOTIFY_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: msv2-api-external-api-keys
+                  key: SPOTIFY_CLIENT_SECRET
             - name: MINIO_BUCKET
               valueFrom:
                 configMapKeyRef:
