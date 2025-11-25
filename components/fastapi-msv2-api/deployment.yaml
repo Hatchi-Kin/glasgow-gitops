@@ -87,7 +87,6 @@ spec:
                 secretKeyRef:
                   name: msv2-api-external-api-keys
                   key: ANTHROPIC_API_KEY
-
             - name: GOOGLE_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -119,7 +118,7 @@ spec:
                   name: fastapi-msv2-api-config
                   key: MSV2_INFERENCE_URL
             - name: ENABLE_DOCS
-              value: "True"
+              value: "False"
           resources:
             requests:
               memory: "256Mi"
