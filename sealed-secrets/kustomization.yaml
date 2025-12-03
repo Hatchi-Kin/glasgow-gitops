@@ -7,5 +7,6 @@ resources:
 - n8n-sealed-secret.yaml
 - fastapi-msv2-api-sealed-secret.yaml
 - msv2-api-external-api-keys.yaml
+- wireguard-sealed-secret.yaml
 
 namespace: glasgow-prod

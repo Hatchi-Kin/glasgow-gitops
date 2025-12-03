@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wireguard
+  namespace: glasgow-prod
+  labels:
+    app: wireguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wireguard
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wireguard
+    spec:
+      containers:
+        - name: wg-easy
+          image: ghcr.io/wg-easy/wg-easy
+          imagePullPolicy: Always
+          env:
+            - name: WG_HOST
+              value: "vpn.msv2.ovh"
+            - name: PASSWORD_HASH
+              valueFrom:
+                secretKeyRef:
+                  name: wireguard-secret
+                  key: PASSWORD_HASH
+            - name: WG_PORT
+              value: "51820"
+            - name: WG_DEFAULT_ADDRESS
+              value: "10.8.0.x"
+            - name: WG_DEFAULT_DNS
+              value: "1.1.1.1"
+            - name: WG_ALLOWED_IPS
+              value: "0.0.0.0/0, ::/0"
+            - name: WG_PERSISTENT_KEEPALIVE
+              value: "25"
+          ports:
+            - containerPort: 51820
+              protocol: UDP
+            - containerPort: 51821
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+                - SYS_MODULE
+          volumeMounts:
+            - name: wireguard-config
+              mountPath: /etc/wireguard
+      volumes:
+        - name: wireguard-config
+          persistentVolumeClaim:
+            claimName: wireguard-pvc
