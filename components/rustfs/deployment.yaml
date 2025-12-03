@@ -15,15 +15,15 @@ spec:
         app: rustfs
     spec:
       securityContext:
-        fsGroup: 10001
+        runAsUser: 0
+        fsGroup: 0
       containers:
       - name: rustfs
         image: rustfs/rustfs:latest
         args:
-        - server
-        - /data
         - --console-address
         - ":9001"
+        - /data
         env:
         - name: RUSTFS_ACCESS_KEY
           valueFrom:
