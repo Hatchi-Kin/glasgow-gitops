@@ -17,6 +17,8 @@ spec:
       labels:
         app: wireguard
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: wg-easy
           image: ghcr.io/wg-easy/wg-easy

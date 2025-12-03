@@ -8,12 +8,8 @@ metadata:
 spec:
   selector:
     app: wireguard
-  type: LoadBalancer
+  type: ClusterIP
   ports:
-    - name: wireguard-udp
-      port: 51820
-      targetPort: 51820
-      protocol: UDP
     - name: wireguard-ui
       port: 51821
       targetPort: 51821
