@@ -28,13 +28,74 @@ The Web UI is available at:
 
 *Note: This UI is for managing clients. It is accessible from your local network. It is generally NOT recommended to expose this UI to the public internet unless you have strict security measures (e.g., strong password, rate limiting, etc.).*
 
-## 3. Connecting Devices
+## 3. Installing WireGuard Client
 
-1.  **Login** to the Web UI.
-2.  Click **+ New Client**.
-3.  Name it (e.g., `Laptop`, `Phone`).
-4.  **Mobile**: Scan the QR code.
-5.  **Desktop**: Download the `.conf` file and import it into the WireGuard app.
+### Linux (Ubuntu/Debian)
+```bash
+sudo apt update
+sudo apt install wireguard
+```
+
+### macOS
+Download from the [Mac App Store](https://apps.apple.com/us/app/wireguard/id1451685025) or use Homebrew:
+```bash
+brew install wireguard-tools
+```
+
+### Windows
+Download the official installer from [wireguard.com/install](https://www.wireguard.com/install/)
+
+### Mobile (iOS/Android)
+- **iOS**: [WireGuard on App Store](https://apps.apple.com/us/app/wireguard/id1441195209)
+- **Android**: [WireGuard on Google Play](https://play.google.com/store/apps/details?id=com.wireguard.android)
+
+## 4. Connecting Your Laptop to the VPN
+
+### Step 1: Create a Client Configuration
+1.  Open the Web UI at **http://wireguard.192.168.1.20.nip.io**
+2.  Login with your password
+3.  Click **+ New Client**
+4.  Give it a name (e.g., `My-Laptop`)
+5.  Click **Create**
+
+### Step 2: Download the Configuration File
+- Click the **Download** button next to your newly created client
+- Save the `.conf` file (e.g., `My-Laptop.conf`)
+
+### Step 3: Import and Connect
+
+#### On Linux:
+```bash
+# Copy the config file to WireGuard directory
+sudo cp My-Laptop.conf /etc/wireguard/wg0.conf
+
+# Start the VPN
+sudo wg-quick up wg0
+
+# To stop the VPN
+sudo wg-quick down wg0
+
+# To enable on boot
+sudo systemctl enable wg-quick@wg0
+```
+
+#### On macOS/Windows (GUI):
+1.  Open the WireGuard application
+2.  Click **Import tunnel(s) from file**
+3.  Select your downloaded `.conf` file
+4.  Click **Activate** to connect
+
+#### On Mobile:
+1.  Open the WireGuard app
+2.  Tap **+** (Add Tunnel)
+3.  **Option A**: Scan the QR code from the Web UI
+4.  **Option B**: Import from file (if you transferred the `.conf` file)
+5.  Toggle the switch to connect
+
+### Step 4: Verify Connection
+Once connected, you should be able to access your home services:
+- Try opening `http://minio.192.168.1.20.nip.io` in your browser
+- If it loads, you're successfully connected!
 
 ## 4. Workflows: How to use it?
 
@@ -74,6 +135,58 @@ You need to tell WireGuard what your "Public Address" is so clients know where t
 2.  **DNS**:
     *   If using a domain (e.g., `vpn.yourdomain.com`), ensure you have an **A Record** in your DNS settings pointing `vpn` to your **Home Public IP**.
     *   *Tip: If your home IP changes (Dynamic IP), use a DDNS service to keep the domain updated.*
+
+## 6. Troubleshooting
+
+### No Internet Access When Connected (Full Tunnel Setup)
+
+**Problem**: When you activate the VPN, you can't browse the web or access any internet services.
+
+**Cause**: The VPN is routing ALL traffic through the tunnel (which is what you want for privacy), but your K3s node isn't configured to forward that traffic to the internet yet.
+
+**Solution - Configure K3s Node as Gateway**:
+
+The VPN is configured for **full tunnel** mode, which means:
+- ✅ All your internet traffic goes through your home connection (privacy + geo-location benefits)
+- ✅ You can access your cluster services
+- ✅ Your public IP appears as your home IP
+
+To make this work, you need to configure your K3s node (192.168.1.20) to act as a gateway:
+
+1.  **SSH into your K3s node**:
+    ```bash
+    ssh user@192.168.1.20
+    ```
+
+2.  **Run the gateway setup script**:
+    ```bash
+    # Copy the script from the repo
+    cd /path/to/glasgow-gitops
+    chmod +x setup-vpn-gateway.sh
+    sudo ./setup-vpn-gateway.sh
+    ```
+
+    This script will:
+    - Enable IP forwarding
+    - Configure NAT/masquerading with iptables
+    - Make the changes permanent (survive reboots)
+
+3.  **Reconnect your VPN**:
+    ```bash
+    sudo wg-quick down wg0
+    sudo wg-quick up wg0
+    ```
+
+4.  **Test**:
+    - Browse to `https://whatismyip.com` - you should see your home IP
+    - Access `http://minio.192.168.1.20.nip.io` - should work
+    - Regular internet browsing should work
+
+**Alternative - Split Tunnel** (if you only want cluster access):
+If you don't need the privacy/geo-location benefits and only want to access your cluster:
+
+1.  Change `WG_ALLOWED_IPS` in `deployment.yaml` to `"192.168.1.0/24"`
+2.  Redeploy and recreate your client config
 
 ### FAQ: Is it safe to expose WireGuard?
 **Yes.** WireGuard is designed to be exposed to the internet.
