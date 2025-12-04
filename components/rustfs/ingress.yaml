@@ -7,6 +7,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/backend-protocol: HTTP
+    traefik.ingress.kubernetes.io/router.middlewares: glasgow-prod-rustfs-cors@kubernetescrd
 spec:
   rules:
   - host: rustfs.192.168.1.20.nip.io

@@ -1,9 +1,20 @@
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
-  name: rustfs-redirect
+  name: rustfs-cors
   namespace: glasgow-prod
 spec:
-  redirectRegex:
-    regex: "^http://rustfs.192.168.1.20.nip.io/$"
-    replacement: "http://rustfs.192.168.1.20.nip.io/rustfs/console/index.html"
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+      - "POST"
+      - "PUT"
+      - "DELETE"
+      - "OPTIONS"
+      - "HEAD"
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowOriginList:
+      - "*"
+    accessControlMaxAge: 100
+    addVaryHeader: true
