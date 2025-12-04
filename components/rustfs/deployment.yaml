@@ -53,14 +53,12 @@ spec:
             memory: "512Mi"
             cpu: "500m"
         readinessProbe:
-          httpGet:
-            path: /minio/health/ready
+          tcpSocket:
             port: 9000
           initialDelaySeconds: 10
           periodSeconds: 10
         livenessProbe:
-          httpGet:
-            path: /minio/health/live
+          tcpSocket:
             port: 9000
           initialDelaySeconds: 30
           periodSeconds: 30

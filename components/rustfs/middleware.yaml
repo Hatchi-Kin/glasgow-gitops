@@ -1,0 +1,9 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: rustfs-redirect
+  namespace: glasgow-prod
+spec:
+  redirectRegex:
+    regex: "^http://rustfs.192.168.1.20.nip.io/$"
+    replacement: "http://rustfs.192.168.1.20.nip.io/rustfs/console/index.html"

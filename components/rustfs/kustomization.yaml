@@ -6,5 +6,6 @@ resources:
   - service.yaml
   - pvc.yaml
   - ingress.yaml
+  - middleware.yaml
 
 namespace: glasgow-prod
