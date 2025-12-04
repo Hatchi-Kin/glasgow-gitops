@@ -25,6 +25,10 @@ spec:
         args:
         - --console-address
         - ":9001"
+        - --access-key
+        - adama
+        - --secret-key
+        - commander
         - /data
         env:
         - name: RUSTFS_ACCESS_KEY
