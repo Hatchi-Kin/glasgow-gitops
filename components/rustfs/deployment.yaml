@@ -43,6 +43,8 @@ spec:
               key: MINIO_ROOT_PASSWORD
         - name: RUSTFS_CONSOLE_ENABLE
           value: "true"
+        - name: RUSTFS_EXTERNAL_ADDRESS
+          value: "http://rustfs.192.168.1.20.nip.io"
         ports:
         - containerPort: 9000
           name: rustfs-api
