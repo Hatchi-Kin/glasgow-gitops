@@ -16,6 +16,8 @@ spec:
       labels:
         app: rustfs
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: adama
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       securityContext:
