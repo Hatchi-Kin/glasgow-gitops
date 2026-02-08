@@ -130,6 +130,15 @@ def reset_namespace():
         print("❌ Reset cancelled")
 
 
+def uncordon_all_nodes():
+    """Uncordon all nodes to allow scheduling"""
+    print("🔓 Uncordoning all nodes...")
+    nodes = ["adama", "apollo", "boomer", "starbuck"]
+    cmd = f"kubectl uncordon {' '.join(nodes)}"
+    run_command(cmd)
+    print("✅ Nodes uncordoned and ready for scheduling")
+
+
 def show_status():
     """Show current cluster status"""
     print("📊 Current Cluster Status")
@@ -155,7 +164,7 @@ def main():
     parser = argparse.ArgumentParser(description="Glasgow GitOps Cluster Management")
     parser.add_argument(
         "action",
-        choices=["stop", "start", "restart", "restart-app", "sync", "reset", "status"],
+        choices=["stop", "start", "restart", "restart-app", "sync", "reset", "status", "uncordon"],
         help="Action to perform",
     )
     parser.add_argument("--app", help="Specific app name for restart-app")
@@ -182,6 +191,8 @@ def main():
         reset_namespace()
     elif args.action == "status":
         show_status()
+    elif args.action == "uncordon":
+        uncordon_all_nodes()
 
 
 if __name__ == "__main__":

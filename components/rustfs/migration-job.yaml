@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: minio-to-rustfs-migration
+  namespace: glasgow-prod
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  template:
+    spec:
+      containers:
+      - name: migration
+        image: minio/mc:latest
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          echo "Waiting for services to be ready..."
+          # Simple retry loop to ensure services are up
+          until mc alias set origin http://minio-service:9000 $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD; do
+            echo "Waiting for MinIO..."
+            sleep 5
+          done
+          
+          until mc alias set dest http://rustfs-service:9000 $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD; do
+            echo "Waiting for RustFS..."
+            sleep 5
+          done
+          
+          echo "Starting migration from MinIO to RustFS..."
+          # Mirror all buckets and objects
+          mc mirror --overwrite --remove origin dest
+          
+          echo "Migration complete!"
+        env:
+        - name: MINIO_ROOT_USER
+          valueFrom:
+            secretKeyRef:
+              name: minio-secret
+              key: MINIO_ROOT_USER
+        - name: MINIO_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: minio-secret
+              key: MINIO_ROOT_PASSWORD
+      restartPolicy: OnFailure

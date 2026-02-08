@@ -315,6 +315,28 @@ def check_storage():
     print()
 
 
+def check_storage_usage():
+    """Check storage usage on each node"""
+    print("🔍 Checking Node Storage Usage...")
+    success, output, error = run_command(
+        "kubectl get nodes -o custom-columns=NAME:.metadata.name,STORAGE:.status.allocatable.ephemeral-storage"
+    )
+    if success:
+        print("✅ Node Storage:")
+        lines = output.split("\n")[1:]  # Skip header
+        for line in lines:
+            if line.strip():
+                parts = line.split()
+                name = parts[0]
+                storage = parts[1]
+                storage_in_mb = int(storage) / 1_000_000_000
+                print(f"   💾 {name}: {storage_in_mb:.0f}Gb")
+ 
+    else:
+        print(f"❌ Failed to get node storage: {error}")
+    print()
+
+
 def check_secrets():
     """Check sealed secrets"""
     print("🔍 Checking Sealed Secrets...")
@@ -382,6 +404,7 @@ def main():
     check_applications()
     check_pods()
     check_storage()
+    check_storage_usage()
     check_secrets()
     check_ingress()
     print("🎉 Health check complete!")
