@@ -44,12 +44,5 @@ spec:
               value: "./clap_text_ov"
             - name: OV_DEVICE
               value: "AUTO"
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: NotIn
-                    values:
-                      - adama
+      nodeSelector:
+        node-role.kubernetes.io/worker: worker
