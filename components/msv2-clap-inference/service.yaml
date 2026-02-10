@@ -15,7 +15,7 @@ spec:
     spec:
       timeoutSeconds: 600
       containers:
-        - image: hatchikin/msv2-clap-inference:latest
+        - image: hatchikin/clap-encoder:v1
           ports:
             - containerPort: 8000
           livenessProbe:
