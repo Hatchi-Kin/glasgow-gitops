@@ -117,6 +117,11 @@ spec:
                 configMapKeyRef:
                   name: fastapi-msv2-api-config
                   key: MSV2_INFERENCE_URL
+            - name: CLAP_INFERENCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: fastapi-msv2-api-config
+                  key: CLAP_INFERENCE_URL
             - name: ENABLE_DOCS
               value: "False"
           resources:
