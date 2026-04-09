@@ -29,17 +29,19 @@ def run_command(cmd):
 def drain_node(node_name):
     """Drain a node gracefully"""
     print(f"🔄 Draining {node_name}...")
-    if node_name == "adama":
-        cmd = f"kubectl drain {node_name} --ignore-daemonsets --delete-emptydir-data --disable-eviction"
-    else:
-        cmd = f"kubectl drain {node_name} --ignore-daemonsets --delete-emptydir-data"
+    # Use --force to handle standalone pods and --disable-eviction for stuck pods
+    cmd = f"kubectl drain {node_name} --ignore-daemonsets --delete-emptydir-data --force --disable-eviction --grace-period=30 --timeout=60s"
     
     success, out, err = run_command(cmd)
     if success:
         print(f"✅ {node_name} drained successfully")
     else:
         print(f"⚠️  {node_name} drain warning: {err}")
-    time.sleep(5)
+        # Try to force delete any remaining pods on this node
+        print(f"   Attempting to force delete remaining pods on {node_name}...")
+        force_cmd = f"kubectl delete pods --all-namespaces --field-selector spec.nodeName={node_name} --force --grace-period=0"
+        run_command(force_cmd)
+    time.sleep(3)
 
 def shutdown_host(hostname, ip):
     """SSH into host and shut down"""
@@ -51,6 +53,30 @@ def shutdown_host(hostname, ip):
     else:
         print(f"❌ Failed to shut down {hostname}: {err}")
 
+def cleanup_standalone_pods():
+    """Delete standalone pods that block draining"""
+    print("🧹 Cleaning up standalone pods...")
+    
+    # Delete iperf3-server and any other standalone pods
+    cmd = "kubectl get pods --all-namespaces --field-selector status.phase=Running -o json"
+    success, out, err = run_command(cmd)
+    
+    if success and out:
+        import json
+        try:
+            data = json.loads(out)
+            for pod in data.get('items', []):
+                owner_refs = pod.get('metadata', {}).get('ownerReferences', [])
+                if not owner_refs:  # No controller
+                    pod_name = pod['metadata']['name']
+                    namespace = pod['metadata']['namespace']
+                    print(f"   Deleting standalone pod: {namespace}/{pod_name}")
+                    run_command(f"kubectl delete pod {pod_name} -n {namespace} --force --grace-period=0")
+        except:
+            pass
+    
+    time.sleep(2)
+
 def main():
     print("🏠 Glasgow GitOps Cluster Shutdown")
     print("=" * 50)
@@ -59,6 +85,9 @@ def main():
     if confirm.lower() != "yes":
         print("Cancelled.")
         sys.exit(0)
+    
+    # Clean up standalone pods first
+    cleanup_standalone_pods()
     
     print("\n📋 Draining all nodes...")
     
