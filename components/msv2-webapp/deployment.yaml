@@ -15,6 +15,8 @@ spec:
       labels:
         app: msv2-webapp
     spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: worker
       containers:
         - name: msv2-webapp
           image: hatchikin/msv2-webapp:main
