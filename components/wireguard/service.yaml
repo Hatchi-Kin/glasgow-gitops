@@ -12,5 +12,23 @@ spec:
   ports:
     - name: wireguard-ui
       port: 51821
-      targetPort: 51821
+      targetPort: http
       protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wireguard-wg
+  namespace: glasgow-prod
+  labels:
+    app: wireguard
+spec:
+  selector:
+    app: wireguard
+  type: NodePort
+  ports:
+    - name: wg
+      port: 51820
+      nodePort: 30000
+      protocol: UDP
+      targetPort: wg

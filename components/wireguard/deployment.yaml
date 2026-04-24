@@ -21,8 +21,8 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: wg-easy
-          image: ghcr.io/wg-easy/wg-easy
-          imagePullPolicy: Always
+          image: ghcr.io/wg-easy/wg-easy:latest
+          imagePullPolicy: IfNotPresent
           env:
             - name: WG_HOST
               value: "vpn.msv2.ovh"
@@ -43,9 +43,32 @@ spec:
               value: "25"
           ports:
             - containerPort: 51820
+              name: wg
               protocol: UDP
             - containerPort: 51821
+              name: http
               protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: http
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: http
+            timeoutSeconds: 1
+          startupProbe:
+            failureThreshold: 30
+            periodSeconds: 5
+            successThreshold: 1
+            tcpSocket:
+              port: http
+            timeoutSeconds: 1
           resources:
             requests:
               cpu: "100m"
