@@ -14,8 +14,10 @@ A complete K3s homelab setup with GitOps management using ArgoCD, persistent sto
 ## 🔐 Standardized Credentials
 
 All services use consistent credentials for easier management:
-- **Username**: `adama`
-- **Password**: `commander`
+- **Username**: `<your-username>`
+- **Password**: `<your-password>`
+
+> **Note**: Actual credentials are stored in Sealed Secrets and not committed to the repository.
 
 ## 🌐 Service Access
 
@@ -24,8 +26,8 @@ All services are accessible via your local network IP with nip.io:
 | Service | URL | Credentials |
 |---------|-----|-------------|
 | **FastAPI** | http://fastapi.192.168.1.20.nip.io | - |
-| **MinIO Console** | http://minio.192.168.1.20.nip.io | `adama` / `commander` |
-| **n8n Workflow** | http://n8n.192.168.1.20.nip.io | `Glasgow` / `Coloc` |
+| **MinIO Console** | http://minio.192.168.1.20.nip.io | See Sealed Secrets |
+| **n8n Workflow** | http://n8n.192.168.1.20.nip.io | See Sealed Secrets |
 | **ArgoCD** | http://argocd.192.168.1.20.nip.io| `admin` / see admin password |
 
 *Note: Replace `192.168.1.20` with your actual K3s node IP*
@@ -226,7 +228,7 @@ Potential improvements and additions:
 - Secrets are encrypted in Git via Sealed Secrets
 - Applications auto-heal if manually modified
 - Cluster can be reset/rebuilt while preserving GitOps config
-- Use `adama`/`commander` for consistent service access
+- Credentials managed via Sealed Secrets for security
 
 ---
 
