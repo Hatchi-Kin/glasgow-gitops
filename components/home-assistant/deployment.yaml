@@ -39,6 +39,9 @@ spec:
             - name: dbus
               mountPath: /run/dbus
               readOnly: true
+            - name: ha-config
+              mountPath: /config/configuration.yaml
+              subPath: configuration.yaml
           env:
             - name: TZ
               value: "Europe/Paris"  # Adjust to your timezone
@@ -74,3 +77,6 @@ spec:
           hostPath:
             path: /run/dbus
             type: Directory
+        - name: ha-config
+          configMap:
+            name: home-assistant-config
