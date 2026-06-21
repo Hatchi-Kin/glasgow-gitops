@@ -16,9 +16,9 @@ spec:
       labels:
         app: home-assistant
     spec:
-      # Use hostNetwork for better device discovery (optional - comment out if not needed)
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
+      # hostNetwork disabled - using device mounts instead for better isolation
+      # hostNetwork: true
+      # dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: home-assistant
           image: ghcr.io/home-assistant/home-assistant:stable
@@ -36,6 +36,9 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: dbus
+              mountPath: /run/dbus
+              readOnly: true
           env:
             - name: TZ
               value: "Europe/Paris"  # Adjust to your timezone
@@ -67,3 +70,7 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: home-assistant-config
+        - name: dbus
+          hostPath:
+            path: /run/dbus
+            type: Directory
