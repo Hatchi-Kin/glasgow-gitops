@@ -8,8 +8,6 @@ metadata:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/backend-protocol: HTTP
     traefik.ingress.kubernetes.io/router.tls: "false"
-    # Home Assistant requires WebSocket support
-    traefik.ingress.kubernetes.io/router.middlewares: default-cors@kubernetescrd
 spec:
   rules:
     - host: homeassistant.192.168.1.20.nip.io
