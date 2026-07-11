@@ -65,5 +65,8 @@ spec:
           periodSeconds: 30
       volumes:
       - name: minio-storage
-        persistentVolumeClaim:
-          claimName: minio-pvc
+        hostPath:
+          path: /var/lib/longhorn/replicas/pvc-40b1807e-6deb-4a7d-8ebb-c4929a46e389-422ddfc3
+          type: Directory
+      nodeSelector:
+        kubernetes.io/hostname: boomer
