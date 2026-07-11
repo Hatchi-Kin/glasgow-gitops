@@ -21,14 +21,7 @@ data:
     http:
       use_x_forwarded_for: true
       trusted_proxies:
-        - 10.42.0.0/16
-        - 10.43.0.0/16
-        - 192.168.1.0/24
-      # Allow connections from local network and cluster
+        - 10.0.0.0/8
+      # Allow all origins - running behind Traefik
       cors_allowed_origins:
-        - http://homeassistant.192.168.1.23.nip.io
-        - https://homeassistant.192.168.1.23.nip.io
-      server_host: 0.0.0.0
-      server_port: 8123
-      # Disable host header validation for nip.io access
-      skip_login: false
+        - "*"
