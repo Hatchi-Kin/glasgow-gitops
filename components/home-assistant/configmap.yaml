@@ -30,3 +30,5 @@ data:
         - https://homeassistant.192.168.1.23.nip.io
       server_host: 0.0.0.0
       server_port: 8123
+      # Disable host header validation for nip.io access
+      skip_login: false

@@ -1,0 +1,15 @@
+# This volume resource tells Longhorn to use the existing replica files on boomer
+# The files are already at: /var/lib/longhorn/replicas/pvc-40b1807e-6deb-4a7d-8ebb-c4929a46e389-422ddfc3/
+# This is the old MinIO volume with 100GB+ music data
+apiVersion: longhorn.io/v1beta1
+kind: Volume
+metadata:
+  name: minio-old-data
+  namespace: longhorn-system
+spec:
+  size: 171798691840
+  numberOfReplicas: 1
+  engine: v1
+  nodeID: boomer
+  frontend: blockdev
+  encrypted: false
