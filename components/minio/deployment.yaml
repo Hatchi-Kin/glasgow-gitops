@@ -70,3 +70,7 @@ spec:
           type: Directory
       nodeSelector:
         kubernetes.io/hostname: boomer
+      tolerations:
+      - key: node.kubernetes.io/disk-pressure
+        operator: Exists
+        effect: NoSchedule
