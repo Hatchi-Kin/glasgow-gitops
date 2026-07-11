@@ -25,6 +25,8 @@ data:
       # Allow all origins - running behind Traefik
       cors_allowed_origins:
         - "*"
+      # Disable reverse proxy check to allow nip.io access
+      skip_login: false
 
     homeassistant:
       # Trust the X-Forwarded-For header from Traefik
