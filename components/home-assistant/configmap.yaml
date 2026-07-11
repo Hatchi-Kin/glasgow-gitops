@@ -17,18 +17,12 @@ data:
     script: !include scripts.yaml
     scene: !include scenes.yaml
 
-    # HTTP configuration for reverse proxy
+    # Disable default_config to allow custom http config
     http:
       use_x_forwarded_for: true
       trusted_proxies:
-        - 10.0.0.0/8
-      # Allow all origins - running behind Traefik
-      cors_allowed_origins:
-        - "*"
-      # Disable reverse proxy check to allow nip.io access
-      skip_login: false
+        - 10.42.0.0/16
 
     homeassistant:
-      # Trust the X-Forwarded-For header from Traefik
       internal_url: http://home-assistant-service:8123
       external_url: http://homeassistant.192.168.1.23.nip.io
