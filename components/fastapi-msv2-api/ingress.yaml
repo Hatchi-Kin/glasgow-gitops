@@ -32,7 +32,7 @@ spec:
                 name: fastapi-msv2-api-service
                 port:
                   number: 8010
-    - host: msv2-api.192.168.1.20.nip.io
+    - host: msv2-api.192.168.1.23.nip.io
       http:
         paths:
           - path: /

@@ -34,7 +34,7 @@ spec:
               name: minio-secret
               key: MINIO_ROOT_PASSWORD
         - name: MINIO_BROWSER_REDIRECT_URL
-          value: "http://minio.192.168.1.20.nip.io"
+          value: "http://minio.192.168.1.23.nip.io"
         ports:
         - containerPort: 9000
           name: minio-api

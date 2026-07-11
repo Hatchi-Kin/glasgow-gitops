@@ -21,7 +21,7 @@ spec:
     accessControlAllowOriginList:
       - "https://webapp.msv2.ovh"
       - "https://www.webapp.msv2.ovh"
-      - "http://msv2-webapp.192.168.1.20.nip.io"
+      - "http://msv2-webapp.192.168.1.23.nip.io"
     accessControlAllowCredentials: true
     accessControlMaxAge: 100
     customRequestHeaders:

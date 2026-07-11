@@ -2,11 +2,13 @@
 
 A complete K3s homelab setup with GitOps management using ArgoCD, persistent storage with Longhorn, and secure secret management with Sealed Secrets.
 
-## �️ Architecture Overview
+## 🏗️ Architecture Overview
 
 - **Kubernetes**: K3s v1.32.6+k3s1
-- **GitOps**: ArgoCD for automated deployments
+- **Control Plane**: starbuck (192.168.1.23)
+- **Workers**: boomer (192.168.1.21), apollo (192.168.1.22)
 - **Storage**: Longhorn for persistent volumes
+- **GitOps**: ArgoCD for automated deployments
 - **Ingress**: Traefik with nip.io for external access
 - **Secrets**: Sealed Secrets for secure credential management
 - **Applications**: Postgres, MinIO, FastAPI, n8n
@@ -25,12 +27,12 @@ All services are accessible via your local network IP with nip.io:
 
 | Service | URL | Credentials |
 |---------|-----|-------------|
-| **FastAPI** | http://fastapi.192.168.1.20.nip.io | - |
-| **MinIO Console** | http://minio.192.168.1.20.nip.io | See Sealed Secrets |
-| **n8n Workflow** | http://n8n.192.168.1.20.nip.io | See Sealed Secrets |
-| **ArgoCD** | http://argocd.192.168.1.20.nip.io| `admin` / see admin password |
+| **FastAPI** | http://fastapi.192.168.1.23.nip.io | - |
+| **MinIO Console** | http://minio.192.168.1.23.nip.io | See Sealed Secrets |
+| **n8n Workflow** | http://n8n.192.168.1.23.nip.io | See Sealed Secrets |
+| **ArgoCD** | http://argocd.192.168.1.23.nip.io| `admin` / see admin password |
 
-*Note: Replace `192.168.1.20` with your actual K3s node IP*
+*Note: Replace `192.168.1.23` with your actual K3s node IP*
 
 ## 🚀 Quick Start
 

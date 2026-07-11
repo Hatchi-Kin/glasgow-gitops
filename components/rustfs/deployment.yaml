@@ -44,9 +44,9 @@ spec:
         - name: RUSTFS_CONSOLE_ENABLE
           value: "true"
         - name: RUSTFS_EXTERNAL_ADDRESS
-          value: "http://rustfs.192.168.1.20.nip.io"
+          value: "http://rustfs.192.168.1.23.nip.io"
         - name: RUSTFS_SERVER_DOMAINS
-          value: "rustfs.192.168.1.20.nip.io"
+          value: "rustfs.192.168.1.23.nip.io"
         ports:
         - containerPort: 9000
           name: rustfs-api

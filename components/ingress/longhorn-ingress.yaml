@@ -8,7 +8,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "false"
 spec:
   rules:
-    - host: longhorn.192.168.1.20.nip.io
+    - host: longhorn.192.168.1.23.nip.io
       http:
         paths:
           - path: /

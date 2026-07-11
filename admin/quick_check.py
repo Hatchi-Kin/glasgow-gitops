@@ -13,10 +13,9 @@ from datetime import datetime
 USERNAME = "bsg"
 PASSWORD = "mlop!"
 HOSTS = [
-    ("adama", "192.168.1.20", "master"),
+    ("starbuck", "192.168.1.23", "master"),
     ("boomer", "192.168.1.21", "worker"),
     ("apollo", "192.168.1.22", "worker"),
-    ("starbuck", "192.168.1.23", "worker"),
 ]
 
 

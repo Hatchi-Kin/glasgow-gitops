@@ -11,7 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-    - host: argocd.192.168.1.20.nip.io
+    - host: argocd.192.168.1.23.nip.io
       http:
         paths:
           - path: /

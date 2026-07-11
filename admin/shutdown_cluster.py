@@ -13,7 +13,6 @@ HOSTS = [
     ("boomer", "192.168.1.21"),
     ("apollo", "192.168.1.22"),
     ("starbuck", "192.168.1.23"),
-    ("adama", "192.168.1.20"),  # Control plane last
 ]
 
 def run_command(cmd):
