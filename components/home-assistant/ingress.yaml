@@ -7,6 +7,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/backend-protocol: HTTP
+    traefik.ingress.kubernetes.io/router.middlewares: glasgow-prod-add-forwarded@kubernetescrd
 spec:
   rules:
     - host: homeassistant.192.168.1.23.nip.io
@@ -19,3 +20,14 @@ spec:
                 name: home-assistant-service
                 port:
                   number: 8123
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: add-forwarded
+spec:
+  headers:
+    customRequestHeaders:
+      X-Forwarded-For: "192.168.1.0"
+      X-Forwarded-Proto: "http"
+      X-Forwarded-Host: "homeassistant.192.168.1.23.nip.io"
